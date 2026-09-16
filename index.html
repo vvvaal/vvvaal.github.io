@@ -1,19 +1,18 @@
 <!DOCTYPE html>
-
-<html>
- <title> Задание 1 </title> 
- <body>
-
-  <a href="http://kubsu.ru/">КубГУ</a> 
-  
-
-  <a href="https://kubsu.ru/">КубГУ</a>
-  
-
-  <img src="image.jpg" alt="Цветок" style="width: 600px;">
-  
-
-  <li> <a href="/internal-page">сокращенную ссылку на внутреннюю страницу</a></li>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2> Гиперссылки: </h2>
+    <ul>
+        <li> <a href="http://kubsu.ru">абсолютную гиперссылку на главную страницу сайта kubsu.ru</a></li>
+        <li> <a href="https://kubsu.ru">абсолютную на главную сайта kubsu.ru в протоколе https </a> </li>
+        <li> <a href="https://shop.wwf.ca/cdn/shop/files/giant-panda-WW230176.jpg?v=1694540662&width=2048">ссылку-изображение</a> 
+            <img src="https://shop.wwf.ca/cdn/shop/files/giant-panda-WW230176.jpg?v=1694540662&width=2048" alt = "panda" width="100px"> </li>
+        <li> <a href="/internal-page">сокращенную ссылку на внутреннюю страницу</a></li>
         <li> <a href="/">сокращенную ссылку на главную страницу</a></li>
         <li> <a href="#fragment-page">ссылку на фрагмент текущей страницы</a></li>
         <li> <a href="https://ozon.com/page?param1=value1&param2=value2&param3=value3">ссылку с тремя параметрами в URL</a></li>
@@ -49,17 +48,17 @@
 
     <h2> Формы: </h2>
     <ul>
-        <form action="" method="get">
+        <form>
             <li>
                 <label for="name">Ваше ФИО: </label>
-                <input id="name" type="text" pattern="[A-Za-zА-Яа-яЁё\s\-]+" title="ФИО может содержать только буквы, пробелы и дефис. Цифры запрещены.">
+                <input id="name" type="text">
             </li>
             <li>
                 <label for="phone">Ваш номер телефона: </label>
-                <input id="phone" type="tel" pattern="\+?[0-9\s\-\(\)]+" title="Номер телефона может содержать только цифры, пробелы, скобки, дефис и знак +. Буквы запрещены.">
+                <input id="phone" type="tel">
             </li>
             <li>
-                <label for="email">Ваша электронная почта: </label>
+                <label for="email">Ваша электронная почтв: </label>
                 <input id="email" type="email">
             </li>
             <li>
@@ -68,26 +67,27 @@
             </li>
             <li>
                 <label for="gender">Ваш пол: </label>
-                <input type="radio" name="gender" id="male" value="male" required> 
+                <input type="radio" name="gender" id="male" value="male"> 
                 <label for="male">Мужской</label>
-                <input type="radio" name="gender" id="female" value="female"> 
+                <input type="radio" name="gender" id="female" value=
+Example Domain
+example.com
+
+
+female"> 
                 <label for="female">Женский</label>
             </li>
             <li>
                 <label for="languages">Ваш любимый язык программирования: </label>
-                <select name="languages[]" id=
-КубГУ
-kubsu.ru
-
-
-nguages" multiple>
+                <select name="languages[]" id="languages" multiple>
                     <option value="Pascal">Pascal</option>
                     <option value="C">C</option>
                     <option value="C++">C++</option>
-                    <option value="JavaScript">JavaScript</option> <option value="PHP">PHP</option>
+                    <option value="JavaScript">JavaScript</option>
+                    <option value="PHP">PHP</option>
                     <option value="Python">Python</option>
                     <option value="Java">Java</option>
-                    <option value="Haskell">Haskell</option>
+                    <option value="Haskel">Haskel</option>
                     <option value="Clojure">Clojure</option>
                     <option value="Prolog">Prolog</option>
                     <option value="Scala">Scala</option>
@@ -95,10 +95,10 @@ nguages" multiple>
             </li>
             <li>
                 <label for="bio">Биография: </label>
-                <textarea name="bio" id="bio" rows = 5 cols = 20></textarea>
+                <textarea name="bio" id="bio" rows = 5 col = 20></textarea>
             </li>
             <li>
-                <label for="check">С контрактом ознакомлен: </label>
+                <label for="check">С конрактом ознакомлен: </label>
                 <input type="checkbox" name="check" id="check">
             </li>
             <li>
@@ -106,7 +106,5 @@ nguages" multiple>
             </li>
         </form>
     </ul>
-  
- </body>
-
+</body>
 </html>
