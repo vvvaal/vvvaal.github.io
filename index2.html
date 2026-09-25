@@ -33,7 +33,7 @@
                 <li><a href="https://kubsu.ru">абсолютная на главную kubsu.ru в протоколе https</a></li>
                 <li>
                     <a href="https://shop.wwf.ca/cdn/shop/files/giant-panda-WW230176.jpg">
-                        <img src="https://shop.wwf.ca/cdn/shop/files/giant-panda-WW230176.jpg" alt="panda" width="100">
+                        <img src="image.jpg" alt="panda" width="100">
                     </a>
                 </li>
                 <li><a href="/internal-page">сокращённая ссылка на внутреннюю страницу</a></li>
@@ -48,7 +48,7 @@
                 <li>Контекстная <a href="https://example.com">ссылка</a> в абзаце</li>
                 <li><a href="http://kubsu.ru#fragment">ссылка на фрагмент стороннего сайта</a></li>
                 <li>
-                    <img src="https://thumbs.dreamstime.com/z/geometric-shape-square-circle-triangle-rectangle-icon-vector-illustration-isolated-white-background-194796064.jpg"
+                    <img src="image2.webp"
                          alt="Shapes" usemap="#shapesMap" width="300" height="300">
                     <map name="shapesMap">
                         <area shape="circle" coords="215,85,50" href="https://example.com" alt="Circle">
@@ -135,23 +135,37 @@
                 <ul>
                     <li>
                         <label for="name">Ваше ФИО:</label>
-                        <input id="name" name="name" type="text">
+                        <input id="name" type="text" pattern="[а-яА-Я]+" required>
                     </li>
                     <li>
                         <label for="phone">Ваш номер телефона:</label>
-                        <input id="phone" name="phone" type="tel">
+                        <input id="phone" type="tel" pattern="[0-9]*" required>
                     </li>
                     <li>
                         <label for="email">Ваша электронная почта:</label>
                         <input id="email" name="email" type="email">
                     </li>
                     <li>
-                        <label for="birthday">Ваша дата рождения:</label>
-                        <input id="birthday" name="birthday" type="date">
+                        <label for="birthDate">Ваша дата рождения: </label>
+                        <input type="date" id="birthDate" onchange="validateBirthDate()">
+        
+                        <script>
+                            function validateBirthDate() {
+                                const today = new Date();
+                                // Текущая дата в формате, который понимает JavaScript
+                                const todayFormatted = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+            
+                                // Если значение в поле больше сегодняшней даты
+                                if (new Date(birthDate.value) > new Date(todayFormatted)) {
+                                    alert('Дата рождения не может быть позже сегодняшней!');
+                                    birthDate.value = todayFormatted; // Сброс значения
+                                }
+                            }
+                        </script>
                     </li>
                     <li>
                         <span>Ваш пол:</span>
-                        <input type="radio" name="gender" id="male" value="male">
+                        <input type="radio" name="gender" id="male" value="male" checked>
                         <label for="male">Мужской</label>
                         <input type="radio" name="gender" id="female" value="female">
                         <label for="female">Женский</label>
@@ -178,7 +192,7 @@
                     </li>
                     <li>
                         <label for="check">С контрактом ознакомлен:</label>
-                        <input type="checkbox" name="check" id="check">
+                        <input type="checkbox" name="check" id="check" required>
                     </li>
                     <li>
                         <input type="submit" value="Сохранить">
