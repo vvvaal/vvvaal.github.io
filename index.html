@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+webp<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -23,7 +23,7 @@
         <li> Контекстная <a href="https://example.com">ссылка </a> в абзаце</li>
         <li><a href="http://kubsu.ru#fragment">Ссылка на фрагмент страницы стороннего сайта</a></li>
         <li>
-            <img src="https://thumbs.dreamstime.com/z/geometric-shape-square-circle-triangle-rectangle-icon-vector-illustration-isolated-white-background-194796064.jpg" alt="Shapes" usemap="#shapesMap" width="300px" height="300px">
+            <img src="image2.webp" alt="Shapes" usemap="#shapesMap" width="300px" height="300px">
             <map name="shapesMap">
                 <!-- Круглая область -->
                 <area shape="circle" coords="215,85,50" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1Qfiij5GwqR66rg0-yvHmV769_RbfhAsSVQ&s" alt="Circle">
@@ -50,30 +50,39 @@
         <form>
             <li>
                 <label for="name">Ваше ФИО: </label>
-                <input id="name" type="text">
+                <input id="name" type="text" pattern="[а-яА-Я]+" required>
             </li>
             <li>
                 <label for="phone">Ваш номер телефона: </label>
-                <input id="phone" type="tel">
+                <input id="phone" type="tel" pattern="[0-9]*" required>
             </li>
             <li>
-                <label for="email">Ваша электронная почтв: </label>
+                <label for="email">Ваша электронная почта: </label>
                 <input id="email" type="email">
             </li>
             <li>
-                <label for="birthday">Ваша дата рождения: </label>
-                <input id="birthday" type="date">
+                <label for="birthDate">Ваша дата рождения: </label>
+                <input type="date" id="birthDate" onchange="validateBirthDate()">
+
+                <script>
+                    function validateBirthDate() {
+                        const today = new Date();
+                        // Текущая дата в формате, который понимает JavaScript
+                        const todayFormatted = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    
+                        // Если значение в поле больше сегодняшней даты
+                        if (new Date(birthDate.value) > new Date(todayFormatted)) {
+                            alert('Дата рождения не может быть позже сегодняшней!');
+                            birthDate.value = todayFormatted; // Сброс значения
+                        }
+                    }
+                </script>
             </li>
             <li>
                 <label for="gender">Ваш пол: </label>
-                <input type="radio" name="gender" id="male" value="male"> 
+                <input type="radio" name="gender" id="male" value="male" checked> 
                 <label for="male">Мужской</label>
-                <input type="radio" name="gender" id="female" value=
-Example Domain
-example.com
-
-
-female"> 
+                <input type="radio" name="gender" id="female" value="female"> 
                 <label for="female">Женский</label>
             </li>
             <li>
@@ -98,7 +107,7 @@ female">
             </li>
             <li>
                 <label for="check">С конрактом ознакомлен: </label>
-                <input type="checkbox" name="check" id="check">
+                <input type="checkbox" name="check" id="check" required>
             </li>
             <li>
                 <input type="submit" value="Сохранить"> 
