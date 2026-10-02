@@ -12,18 +12,19 @@
             width: 100%;
             background: #f0f0f0;
             border-bottom: 1px solid #ccc;
-            padding: 4px 8px;
+            padding: 6px 8px;
         }
         .header__inner {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            align-items: center;
+            gap: 6px;
         }
         .header__logo {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 6px;
-            height: 24px;
         }
         .header__logo-img {
             width: 20px !important;
@@ -34,9 +35,12 @@
             display: block !important;
         }
         .header__title {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: bold;
             line-height: 1;
+        }
+        .nav {
+            width: 100%;
         }
         .nav__list {
             list-style: none;
@@ -44,26 +48,29 @@
             padding: 0;
             display: flex;
             flex-direction: column;
+            align-items: center;
             gap: 2px;
         }
         .nav__link {
             display: block;
-            padding: 3px 6px;
+            padding: 3px 10px;
             background: #e0e0e0;
             color: #000;
             text-decoration: none;
             border-radius: 3px;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             line-height: 1.2;
+            text-align: center;
         }
+
         @media (min-width: 768px) {
             .header__inner {
                 flex-direction: row;
-                justify-content: space-between;
+                justify-content: center;
                 align-items: center;
+                gap: 20px;
                 max-width: 960px;
                 margin: 0 auto;
-                gap: 12px;
             }
             .header__logo-img {
                 width: 24px !important;
@@ -71,14 +78,20 @@
                 max-width: 24px !important;
                 max-height: 24px !important;
             }
+            .header__title {
+                font-size: 1rem;
+            }
+            .nav {
+                width: auto;
+            }
             .nav__list {
                 flex-direction: row;
-                gap: 12px;
+                gap: 16px;
             }
             .nav__link {
                 background: transparent;
                 padding: 0;
-                font-size: 0.85rem;
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -149,59 +162,61 @@
 
         <section class="section section--table" id="table">
             <h2 class="section__title">Таблица сравнения телефонов:</h2>
-            <table class="comparison-table">
-                <thead class="comparison-table__header">
-                    <tr>
-                        <th class="comparison-table__header-cell">Название</th>
-                        <th class="comparison-table__header-cell">Цена</th>
-                        <th class="comparison-table__header-cell">Оценка</th>
-                        <th class="comparison-table__header-cell">Плюсы и минусы</th>
-                    </tr>
-                </thead>
-                <tbody class="comparison-table__body">
-                    <tr class="comparison-table__row category-row">
-                        <td class="comparison-table__cell" colspan="4">Флагманы 2021 года</td>
-                    </tr>
-                    <tr class="comparison-table__row">
-                        <td class="comparison-table__cell">iPhone 13 Pro</td>
-                        <td class="comparison-table__cell">120 000 ₽</td>
-                        <td class="comparison-table__cell">9/10</td>
-                        <td class="comparison-table__cell">
-                            <span class="comparison-table__positive">+ Отличная камера</span><br>
-                            <span class="comparison-table__negative">− Высокая цена</span>
-                        </td>
-                    </tr>
-                    <tr class="comparison-table__row">
-                        <td class="comparison-table__cell">Samsung Galaxy S21</td>
-                        <td class="comparison-table__cell">85 000 ₽</td>
-                        <td class="comparison-table__cell">8.5/10</td>
-                        <td class="comparison-table__cell">
-                            <span class="comparison-table__positive">+ Производительность</span><br>
-                            <span class="comparison-table__negative">− Пластиковый корпус</span>
-                        </td>
-                    </tr>
-                    <tr class="comparison-table__row category-row">
-                        <td class="comparison-table__cell" colspan="4">Бюджетные модели</td>
-                    </tr>
-                    <tr class="comparison-table__row">
-                        <td class="comparison-table__cell">Xiaomi Mi 11</td>
-                        <td class="comparison-table__cell" rowspan="2">от 65 000 ₽</td>
-                        <td class="comparison-table__cell">8/10</td>
-                        <td class="comparison-table__cell">
-                            <span class="comparison-table__positive">+ Доступная цена</span><br>
-                            <span class="comparison-table__negative">− Поддержка обновлений</span>
-                        </td>
-                    </tr>
-                    <tr class="comparison-table__row">
-                        <td class="comparison-table__cell">Google Pixel 6</td>
-                        <td class="comparison-table__cell">9.5/10</td>
-                        <td class="comparison-table__cell">
-                            <span class="comparison-table__positive">+ Чистый Android</span><br>
-                            <span class="comparison-table__negative">− Доступность в странах</span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-wrap">
+                <table class="comparison-table">
+                    <thead class="comparison-table__header">
+                        <tr>
+                            <th class="comparison-table__header-cell">Название</th>
+                            <th class="comparison-table__header-cell">Цена</th>
+                            <th class="comparison-table__header-cell">Оценка</th>
+                            <th class="comparison-table__header-cell">Плюсы и минусы</th>
+                        </tr>
+                    </thead>
+                    <tbody class="comparison-table__body">
+                        <tr class="comparison-table__row category-row">
+                            <td class="comparison-table__cell" colspan="4">Флагманы 2021 года</td>
+                        </tr>
+                        <tr class="comparison-table__row">
+                            <td class="comparison-table__cell">iPhone 13 Pro</td>
+                            <td class="comparison-table__cell">120 000 ₽</td>
+                            <td class="comparison-table__cell">9/10</td>
+                            <td class="comparison-table__cell">
+                                <span class="comparison-table__positive">+ Отличная камера</span><br>
+                                <span class="comparison-table__negative">− Высокая цена</span>
+                            </td>
+                        </tr>
+                        <tr class="comparison-table__row">
+                            <td class="comparison-table__cell">Samsung Galaxy S21</td>
+                            <td class="comparison-table__cell">85 000 ₽</td>
+                            <td class="comparison-table__cell">8.5/10</td>
+                            <td class="comparison-table__cell">
+                                <span class="comparison-table__positive">+ Производительность</span><br>
+                                <span class="comparison-table__negative">− Пластиковый корпус</span>
+                            </td>
+                        </tr>
+                        <tr class="comparison-table__row category-row">
+                            <td class="comparison-table__cell" colspan="4">Бюджетные модели</td>
+                        </tr>
+                        <tr class="comparison-table__row">
+                            <td class="comparison-table__cell">Xiaomi Mi 11</td>
+                            <td class="comparison-table__cell" rowspan="2">от 65 000 ₽</td>
+                            <td class="comparison-table__cell">8/10</td>
+                            <td class="comparison-table__cell">
+                                <span class="comparison-table__positive">+ Доступная цена</span><br>
+                                <span class="comparison-table__negative">− Поддержка обновлений</span>
+                            </td>
+                        </tr>
+                        <tr class="comparison-table__row">
+                            <td class="comparison-table__cell">Google Pixel 6</td>
+                            <td class="comparison-table__cell">9.5/10</td>
+                            <td class="comparison-table__cell">
+                                <span class="comparison-table__positive">+ Чистый Android</span><br>
+                                <span class="comparison-table__negative">− Доступность в странах</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
 
         <section class="section section--form" id="form">
