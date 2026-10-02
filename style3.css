@@ -29,23 +29,28 @@ img {
 /* ---------- MAIN (контент по центру) ---------- */
 .main {
     width: 100%;
+    max-width: 800px;          /* ограничиваем ширину контента */
+    margin: 0 auto;            /* центрируем весь main */
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center;       /* центрируем секции по горизонтали */
     padding: 16px 12px;
     gap: 28px;
+    text-align: center;        /* текст по центру */
 }
 
 .section {
     width: 100%;
-    max-width: 100%;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;       /* содержимое секции по центру */
 }
 
 .section__title {
     font-size: 1.15rem;
     margin: 0 0 12px;
     text-align: center;
+    width: 100%;
 }
 
 /* ---------- ORDER: таблица выше ссылок на мобильном ---------- */
@@ -58,8 +63,9 @@ img {
     list-style: none;
     margin: 0 auto;
     padding: 0;
+    width: 100%;
     max-width: 600px;
-    text-align: center;
+    text-align: center;        /* ссылки по центру */
 }
 
 .link-list__item {
@@ -74,12 +80,12 @@ img {
 
 .link-list__image {
     display: block;
-    margin: 6px auto;
+    margin: 6px auto;          /* картинки по центру */
 }
 
 .link-list__ordered {
     display: inline-block;
-    text-align: left;
+    text-align: left;          /* нумерованный список — текст слева */
     margin: 0 auto;
     padding-left: 20px;
 }
@@ -89,6 +95,8 @@ img {
     width: 100%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    display: flex;
+    justify-content: center;   /* таблица по центру, если уже контейнера */
 }
 
 .comparison-table {
@@ -96,7 +104,7 @@ img {
     min-width: 480px;
     border-collapse: collapse;
     font-size: 0.85rem;
-    margin: 0 auto;
+    margin: 0 auto;            /* таблица по центру */
 }
 
 .comparison-table__header-cell,
@@ -128,7 +136,7 @@ img {
 .form {
     width: 100%;
     max-width: 480px;
-    margin: 0 auto;
+    margin: 0 auto;            /* форма по центру */
 }
 
 .form__list {
@@ -144,7 +152,7 @@ img {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    text-align: left;
+    text-align: left;          /* подписи полей — слева */
 }
 
 .form__label {
@@ -169,7 +177,7 @@ img {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    align-self: center;
+    align-self: center;        /* кнопка по центру */
     font-size: 1rem;
 }
 
@@ -194,11 +202,11 @@ img {
 
     .main {
         max-width: 960px;
-        margin: 0 auto;
         padding: 24px 20px;
         gap: 32px;
     }
 
+    /* На планшете естественный порядок: ссылки → таблица → форма */
     .section--links { order: 1; }
     .section--table { order: 2; }
     .section--form  { order: 3; }
@@ -209,7 +217,7 @@ img {
 
     .comparison-table {
         font-size: 0.95rem;
-        min-width: 0;
+        min-width: 0;          /* на планшете таблица вписывается без скролла */
     }
 
     .form {
@@ -255,6 +263,7 @@ img {
 
     .footer__inner {
         max-width: 1100px;
+        margin: 0 auto;
     }
 }
 
