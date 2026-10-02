@@ -1,0 +1,231 @@
+/* Общие стили */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #e6f2ff;
+}
+
+header, footer, main {
+    width: 100%; /* Занимают 100% ширины */
+    box-sizing: border-box; /* Учитываем отступы и границы в ширине */
+}
+
+.header {
+    display: flex;
+    flex-direction: column; /* Вертикальное расположение для мобильных устройств */
+    background-color: #4a7c59;
+    color: white;
+    padding: 10px; /* Уменьшены отступы */
+}
+
+.header__logo {
+    display: flex;
+    align-items: center;
+}
+
+.header__logo-image {
+    width: 80px; /* Уменьшение размера логотипа */
+    height: auto; /* Автоматическое масштабирование */
+    margin-right: 10px; /* Отступ между логотипом и заголовком */
+    border-radius: 50%;
+}
+
+.header__title {
+    margin: 0;
+    font-size: 1.5em; /* Размер заголовка */
+}
+
+/* Навигация */
+.nav {
+    margin-top: 10px;
+}
+
+.nav__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column; /* Вертикальное расположение для мобильных устройств */
+}
+
+.nav__item {
+    margin: 5px 0; /* Вертикальный отступ между пунктами */
+}
+
+.nav__link {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px;
+    display: block;
+}
+
+.nav__link:hover {
+    text-decoration: underline;
+}
+
+.section {
+    max-width: 960px; /* Ограничение максимальной ширины */
+    margin: 0 auto; /* Центрирование */
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Стили для таблицы */
+.comparison-table {
+    width: 100%; /* Занимает 100% ширины */
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.comparison-table__header-cell,
+.comparison-table__cell {
+    border: 1px solid #4a7c59;
+    padding: 10px;
+    text-align: left;
+    min-width: 150px; /* Устанавливает минимальную ширину для ячеек */
+}
+
+.comparison-table__header-cell {
+    background-color: #4a7c59;
+    color: white;
+}
+
+.comparison-table__row {
+    display: table-row; /* Используем table-row для строк таблицы */
+    width: 100%; /* Занимает 100% ширины */
+}
+
+.comparison-table__row:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.comparison-table__row:nth-child(odd) {
+    background-color: #e6f2ff;
+}
+
+.comparison-table tr {
+    transition: all .3s;
+}
+
+.comparison-table tr:hover {
+    background-color: #ccc;
+}
+
+/* Форма */
+.form__list {
+    list-style: none;
+    padding: 0;
+}
+
+.form__item {
+    margin-bottom: 15px;
+}
+
+.form__label {
+    display: inline-block;
+    width: 100%; /* Занимает 100% ширины */
+}
+
+.form__input,
+.form__textarea,
+.form__select {
+    width: 100%; /* Занимает 100% ширины */
+    padding: 5px;
+}
+
+.form__radio,
+.form__checkbox {
+    margin-left: 10px;
+}
+
+.form__submit {
+    background-color: #4a7c59;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.form__submit:hover {
+    background-color: #609978;
+}
+
+/* Футтер */
+.footer {
+    background-color: #4a7c59;
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
+
+/* Медиа-запросы */
+@media (min-width: 768px) {
+    .header {
+        flex-direction: row; /* Горизонтальное расположение для планшетов и десктопов */
+        justify-content: space-between; /* Разделяем логотип и навигацию */
+    }
+
+    .nav__list {
+        flex-direction: row; /* Горизонтальное расположение навигации */
+        padding: 0; /* Убираем отступы для горизонтальной навигации */
+    }
+
+    .nav__item {
+        margin: 0 10px; /* Горизонтальный отступ между пунктами */
+    }
+
+    .section {
+        display: flex;
+        flex-direction: column; /* Вертикальное расположение для мобильных устройств */
+    }
+
+    /* Убираем прокрутку для таблицы на больших экранах */
+    .comparison-table {
+        overflow-x: visible; /* Убираем прокрутку */
+        display: table; /* Делаем таблицу обычной таблицей */
+        width: auto; /* Автоматическая ширина */
+    }
+
+    .comparison-table__header-cell,
+    .comparison-table__cell {
+        width: auto; /* Автоматическая ширина для ячеек */
+    }
+
+    .comparison-table__row {
+        display: table-row; /* Используем table-row для строк таблицы */
+    }
+}
+
+@media (max-width: 767px) {
+    .main {
+        display: flex;
+        flex-direction: column; /* Вертикальное расположение для мобильных устройств */
+    }
+
+    .section {
+        width: 100%; /* Занимают 100% ширины */
+        box-sizing: border-box; /* Учитываем отступы и границы в ширине */
+    }
+
+    .section--links {
+        order: 1; /* Секция ссылок идет ниже */
+    }
+
+    .section--table {
+        order: 0; /* Помещаем секцию таблицы выше секции ссылок */
+    }
+
+    .section--form {
+        order: 2;
+    }
+
+    .comparison-table {
+        display: block; /* Делает таблицу блочным элементом */
+        overflow-x: auto; /* Позволяет прокрутку по оси X */
+        width: 100%; /* Занимает 100% ширины родителя */
+    }
+}
