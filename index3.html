@@ -5,6 +5,83 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Задание 3</title>
     <link rel="stylesheet" href="style.css">
+
+    <!-- ВСТРОЕННЫЕ СТИЛИ — перекрывают всё, что в style.css -->
+    <style>
+        .header {
+            width: 100%;
+            background: #f0f0f0;
+            border-bottom: 1px solid #ccc;
+            padding: 4px 8px;
+        }
+        .header__inner {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .header__logo {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            height: 24px;
+        }
+        .header__logo-img {
+            width: 20px !important;
+            height: 20px !important;
+            max-width: 20px !important;
+            max-height: 20px !important;
+            object-fit: cover !important;
+            display: block !important;
+        }
+        .header__title {
+            font-size: 0.85rem;
+            font-weight: bold;
+            line-height: 1;
+        }
+        .nav__list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .nav__link {
+            display: block;
+            padding: 3px 6px;
+            background: #e0e0e0;
+            color: #000;
+            text-decoration: none;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            line-height: 1.2;
+        }
+        @media (min-width: 768px) {
+            .header__inner {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                max-width: 960px;
+                margin: 0 auto;
+                gap: 12px;
+            }
+            .header__logo-img {
+                width: 24px !important;
+                height: 24px !important;
+                max-width: 24px !important;
+                max-height: 24px !important;
+            }
+            .nav__list {
+                flex-direction: row;
+                gap: 12px;
+            }
+            .nav__link {
+                background: transparent;
+                padding: 0;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -28,7 +105,6 @@
     <!-- ОСНОВНОЙ КОНТЕНТ -->
     <main class="main">
 
-        <!-- Ссылки идут первыми в HTML, но на мобильном визуально будут ниже таблицы -->
         <section class="section section--links" id="links">
             <h2 class="section__title">Гиперссылки:</h2>
             <ul class="link-list">
@@ -71,7 +147,6 @@
             </ul>
         </section>
 
-        <!-- Таблица -->
         <section class="section section--table" id="table">
             <h2 class="section__title">Таблица сравнения телефонов:</h2>
             <table class="comparison-table">
@@ -129,7 +204,6 @@
             </table>
         </section>
 
-        <!-- Форма -->
         <section class="section section--form" id="form">
             <h2 class="section__title">Формы:</h2>
             <form class="form">
@@ -190,10 +264,9 @@
 
     </main>
 
-    <!-- ПОДВАЛ -->
     <footer class="footer">
         <div class="footer__inner">
-            (с) Владимир Калашников
+            (с) Сергей Синица
         </div>
     </footer>
 
