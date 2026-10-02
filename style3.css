@@ -25,7 +25,7 @@ img {
     height: auto;
 }
 
-/* ---------- HEADER (очень компактная шапка) ---------- */
+/* ---------- HEADER (компактная шапка) ---------- */
 .header {
     width: 100%;
     background: #f0f0f0;
@@ -43,24 +43,31 @@ img {
 .header__logo {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
+    height: 22px;
+    overflow: hidden;
 }
 
+/* Обрезаем светлые поля у логотипа VK */
 .header__logo-img {
-    width: 20px;
-    height: 20px;
-    object-fit: contain;
-    display: block;
+    width: 22px !important;
+    height: 55px !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    display: block !important;
+    max-width: none !important;
+    max-height: none !important;
+    flex-shrink: 0;
 }
 
 .header__title {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: bold;
     line-height: 1;
     margin: 0;
 }
 
-/* ---------- NAV (компактное меню) ---------- */
+/* ---------- NAV (вертикальный список на мобильном) ---------- */
 .nav {
     width: 100%;
 }
@@ -227,17 +234,21 @@ img {
         align-items: center;
         max-width: 960px;
         margin: 0 auto;
-        padding: 4px 16px;
+        padding: 6px 16px;
         gap: 12px;
     }
 
+    .header__logo {
+        height: 26px;
+    }
+
     .header__logo-img {
-        width: 24px;
-        height: 24px;
+        width: 26px !important;
+        height: 65px !important;
     }
 
     .header__title {
-        font-size: 0.9rem;
+        font-size: 0.95rem;
     }
 
     .nav {
