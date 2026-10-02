@@ -1,44 +1,65 @@
-/* Общие стили */
-body {
+/* =========================================================
+   MOBILE FIRST — базовые стили для смартфона (портрет)
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html, body {
     margin: 0;
     padding: 0;
+}
+
+body {
     font-family: Arial, sans-serif;
-    background-color: #e6f2ff;
+    line-height: 1.5;
+    color: #222;
+    background: #fff;
 }
 
-header, footer, main {
-    width: 100%; /* Занимают 100% ширины */
-    box-sizing: border-box; /* Учитываем отступы и границы в ширине */
+img {
+    max-width: 100%;
+    height: auto;
 }
 
+/* ---------- HEADER ---------- */
 .header {
+    width: 100%;
+    background: #f0f0f0;
+    border-bottom: 1px solid #ccc;
+}
+
+.header__inner {
     display: flex;
-    flex-direction: column; /* Вертикальное расположение для мобильных устройств */
-    background-color: #4a7c59;
-    color: white;
-    padding: 10px; /* Уменьшены отступы */
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
 }
 
 .header__logo {
     display: flex;
     align-items: center;
+    gap: 10px;
 }
 
-.header__logo-image {
-    width: 80px; /* Уменьшение размера логотипа */
-    height: auto; /* Автоматическое масштабирование */
-    margin-right: 10px; /* Отступ между логотипом и заголовком */
-    border-radius: 50%;
+.header__logo-img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
 }
 
 .header__title {
-    margin: 0;
-    font-size: 1.5em; /* Размер заголовка */
+    font-size: 1.2rem;
+    font-weight: bold;
 }
 
-/* Навигация */
+/* ---------- NAV (вертикальный список на мобильном) ---------- */
 .nav {
-    margin-top: 10px;
+    width: 100%;
 }
 
 .nav__list {
@@ -46,186 +67,237 @@ header, footer, main {
     margin: 0;
     padding: 0;
     display: flex;
-    flex-direction: column; /* Вертикальное расположение для мобильных устройств */
-}
-
-.nav__item {
-    margin: 5px 0; /* Вертикальный отступ между пунктами */
+    flex-direction: column;
+    gap: 6px;
 }
 
 .nav__link {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    padding: 10px;
     display: block;
+    padding: 8px 10px;
+    background: #e0e0e0;
+    color: #000;
+    text-decoration: none;
+    border-radius: 4px;
 }
 
 .nav__link:hover {
-    text-decoration: underline;
+    background: #d0d0d0;
+}
+
+/* ---------- MAIN ---------- */
+.main {
+    width: 100%;
+    display: flex;
+    flex-direction: column;   /* на мобильном блоки друг под другом */
+    padding: 16px;
+    gap: 24px;
 }
 
 .section {
-    max-width: 960px; /* Ограничение максимальной ширины */
-    margin: 0 auto; /* Центрирование */
-    padding: 20px;
-    background-color: #ffffff;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
 }
 
-/* Стили для таблицы */
+.section__title {
+    font-size: 1.2rem;
+    margin: 0 0 12px;
+}
+
+/* ---------- ORDER: таблица выше ссылок на мобильном ---------- */
+.section--table {
+    order: 1;
+}
+
+.section--links {
+    order: 2;
+}
+
+.section--form {
+    order: 3;
+}
+
+/* ---------- LINK LIST ---------- */
+.link-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.link-list__item {
+    margin-bottom: 8px;
+    word-wrap: break-word;
+}
+
+.link-list__link {
+    color: #0645ad;
+    text-decoration: underline;
+}
+
+.link-list__image {
+    display: block;
+    margin-top: 6px;
+}
+
+/* ---------- TABLE ---------- */
 .comparison-table {
-    width: 100%; /* Занимает 100% ширины */
+    width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    font-size: 0.9rem;
 }
 
 .comparison-table__header-cell,
 .comparison-table__cell {
-    border: 1px solid #4a7c59;
-    padding: 10px;
+    border: 1px solid #999;
+    padding: 6px 8px;
     text-align: left;
-    min-width: 150px; /* Устанавливает минимальную ширину для ячеек */
+    vertical-align: top;
 }
 
 .comparison-table__header-cell {
-    background-color: #4a7c59;
-    color: white;
+    background: #e8e8e8;
 }
 
-.comparison-table__row {
-    display: table-row; /* Используем table-row для строк таблицы */
-    width: 100%; /* Занимает 100% ширины */
+.category-row .comparison-table__cell {
+    background: #f5f5f5;
+    font-weight: bold;
 }
 
-.comparison-table__row:nth-child(even) {
-    background-color: #f2f2f2;
+.comparison-table__positive {
+    color: #1a7f1a;
 }
 
-.comparison-table__row:nth-child(odd) {
-    background-color: #e6f2ff;
+.comparison-table__negative {
+    color: #b00000;
 }
 
-.comparison-table tr {
-    transition: all .3s;
-}
-
-.comparison-table tr:hover {
-    background-color: #ccc;
-}
-
-/* Форма */
+/* ---------- FORM ---------- */
 .form__list {
     list-style: none;
+    margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .form__item {
-    margin-bottom: 15px;
-}
-
-.form__label {
-    display: inline-block;
-    width: 100%; /* Занимает 100% ширины */
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
 .form__input,
-.form__textarea,
-.form__select {
-    width: 100%; /* Занимает 100% ширины */
-    padding: 5px;
-}
-
-.form__radio,
-.form__checkbox {
-    margin-left: 10px;
+.form__select,
+.form__textarea {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    font: inherit;
 }
 
 .form__submit {
-    background-color: #4a7c59;
-    color: white;
+    padding: 8px 16px;
+    background: #2a6df4;
+    color: #fff;
     border: none;
-    padding: 10px 20px;
+    border-radius: 4px;
     cursor: pointer;
-    width: 100%;
+    align-self: flex-start;
 }
 
 .form__submit:hover {
-    background-color: #609978;
+    background: #1f57c9;
 }
 
-/* Футтер */
+/* ---------- FOOTER ---------- */
 .footer {
-    background-color: #4a7c59;
-    color: white;
+    width: 100%;
+    background: #f0f0f0;
+    border-top: 1px solid #ccc;
+    padding: 12px 16px;
     text-align: center;
-    padding: 10px;
+    font-size: 0.9rem;
 }
 
-/* Медиа-запросы */
+/* =========================================================
+   TABLET — от 768px
+   ========================================================= */
 @media (min-width: 768px) {
-    .header {
-        flex-direction: row; /* Горизонтальное расположение для планшетов и десктопов */
-        justify-content: space-between; /* Разделяем логотип и навигацию */
+
+    /* Шапка в одну строку: лого слева, меню справа */
+    .header__inner {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 960px;
+        margin: 0 auto;
     }
 
+    /* Горизонтальное меню */
     .nav__list {
-        flex-direction: row; /* Горизонтальное расположение навигации */
-        padding: 0; /* Убираем отступы для горизонтальной навигации */
+        flex-direction: row;
+        gap: 16px;
     }
 
-    .nav__item {
-        margin: 0 10px; /* Горизонтальный отступ между пунктами */
+    .nav__link {
+        background: transparent;
+        padding: 6px 0;
     }
 
-    .section {
-        display: flex;
-        flex-direction: column; /* Вертикальное расположение для мобильных устройств */
+    .nav__link:hover {
+        background: transparent;
+        text-decoration: underline;
     }
 
-    /* Убираем прокрутку для таблицы на больших экранах */
-    .comparison-table {
-        overflow-x: visible; /* Убираем прокрутку */
-        display: table; /* Делаем таблицу обычной таблицей */
-        width: auto; /* Автоматическая ширина */
+    /* Основной контент по центру, максимум 960px */
+    .main {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 24px 16px;
     }
 
-    .comparison-table__header-cell,
-    .comparison-table__cell {
-        width: auto; /* Автоматическая ширина для ячеек */
+    /* На планшете возвращаем естественный порядок: ссылки → таблица → форма */
+    .section--links { order: 1; }
+    .section--table { order: 2; }
+    .section--form  { order: 3; }
+
+    /* Форма в две колонки для удобства */
+    .form__list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px 24px;
     }
 
-    .comparison-table__row {
-        display: table-row; /* Используем table-row для строк таблицы */
+    .form__item--full {
+        grid-column: 1 / -1;
+    }
+
+    .footer__inner {
+        max-width: 960px;
+        margin: 0 auto;
     }
 }
 
-@media (max-width: 767px) {
-    .main {
-        display: flex;
-        flex-direction: column; /* Вертикальное расположение для мобильных устройств */
+/* =========================================================
+   DESKTOP — от 1024px
+   ========================================================= */
+@media (min-width: 1024px) {
+
+    .header__inner,
+    .main,
+    .footer__inner {
+        max-width: 1100px;
     }
 
-    .section {
-        width: 100%; /* Занимают 100% ширины */
-        box-sizing: border-box; /* Учитываем отступы и границы в ширине */
+    .header__title {
+        font-size: 1.4rem;
     }
 
-    .section--links {
-        order: 1; /* Секция ссылок идет ниже */
-    }
-
-    .section--table {
-        order: 0; /* Помещаем секцию таблицы выше секции ссылок */
-    }
-
-    .section--form {
-        order: 2;
+    .section__title {
+        font-size: 1.4rem;
     }
 
     .comparison-table {
-        display: block; /* Делает таблицу блочным элементом */
-        overflow-x: auto; /* Позволяет прокрутку по оси X */
-        width: 100%; /* Занимает 100% ширины родителя */
+        font-size: 1rem;
     }
 }
