@@ -42,8 +42,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // 3. Расчет стоимости
         const totalCost = price * quantity;
 
-        // Вывод результата
-        resultDisplay.textContent = `Итого к оплате: ${totalCost.toLocaleString('ru-RU')} руб.`;
+        // Вывод результата (с разделением тысяч)
+        resultDisplay.textContent = `Итого к оплате: ${totalCost.toLocaleString('ru-RU')} ₽`;
         resultDisplay.classList.add('success');
     });
 });
