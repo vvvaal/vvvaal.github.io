@@ -1,1 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задание 5 - Калькулятор стоимости</title>
+    <!-- Подключаем стили -->
+    <link rel="stylesheet" href="style5.css">
+    <!-- 
+      Подключаем скрипт с атрибутом defer. 
+      Это требование ТЗ (-5 баллов, если нет defer или скрипта внизу body).
+    -->
+    <script src="calc.js" defer></script>
+</head>
+<body>
 
+    <main class="calculator-container">
+        <h1>Калькулятор стоимости заказа</h1>
+        
+        <form id="orderForm">
+            <!-- Выбор товара -->
+            <div class="form-group">
+                <label for="productSelect">Выберите товар:</label>
+                <select id="productSelect" class="form-control" required>
+                    <option value="" disabled selected>-- Выберите товар --</option>
+                    <option value="150">Товар А (150 руб.)</option>
+                    <option value="300">Товар Б (300 руб.)</option>
+                    <option value="450">Товар В (450 руб.)</option>
+                    <option value="1200">Товар Г (1200 руб.)</option>
+                </select>
+            </div>
+
+            <!-- Ввод количества -->
+            <div class="form-group">
+                <label for="quantityInput">Количество (шт.):</label>
+                <input type="text" id="quantityInput" class="form-control" placeholder="Введите число" required>
+            </div>
+
+            <!-- Кнопка -->
+            <button type="submit" id="calculateBtn" class="btn-calculate">Рассчитать стоимость</button>
+        </form>
+
+        <!-- Блок для вывода результата -->
+        <div id="resultDisplay" class="result-box" aria-live="polite">
+            <!-- Сюда JS будет выводить текст -->
+        </div>
+    </main>
+
+</body>
+</html>
