@@ -3,37 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Задание 5 - Калькулятор стоимости</title>
+    <title>Калькулятор стоимости заказа</title>
     <link rel="stylesheet" href="style5.css">
-    <!-- Скрипт подключен с defer, как требует ТЗ -->
+    <!-- Скрипт с defer, как требует ТЗ -->
     <script src="calc.js" defer></script>
 </head>
 <body>
 
-    <main class="calculator-container">
-        <h1>Калькулятор стоимости заказа</h1>
+    <main class="calculator-card">
+        <h1>Калькулятор заказа</h1>
+        <p class="subtitle">Выберите устройство и укажите количество</p>
         
         <form id="orderForm">
-            <!-- Выбор товара -->
             <div class="form-group">
                 <label for="productSelect">Выберите товар:</label>
-                <select id="productSelect" class="form-control" required>
-                    <option value="" disabled selected>-- Выберите товар --</option>
-                    <option value="150">Товар А (150 руб.)</option>
-                    <option value="300">Товар Б (300 руб.)</option>
-                    <option value="450">Товар В (450 руб.)</option>
-                    <option value="1200">Товар Г (1200 руб.)</option>
+                <select id="productSelect" class="form-input" required>
+                    <option value="" disabled selected>-- Выберите модель --</option>
+                    <option value="120000">iPhone 15 Pro Max — 120 000 ₽</option>
+                    <option value="95000">iPhone 15 Pro — 95 000 ₽</option>
+                    <option value="75000">iPhone 15 — 75 000 ₽</option>
+                    <option value="55000">iPhone 14 — 55 000 ₽</option>
+                    <option value="30000">iPhone SE — 30 000 ₽</option>
+                    <option value="150000">MacBook Pro 14" — 150 000 ₽</option>
+                    <option value="100000">MacBook Air 13" — 100 000 ₽</option>
+                    <option value="80000">iPad Pro 11" — 80 000 ₽</option>
+                    <option value="25000">Apple Watch Series 9 — 25 000 ₽</option>
+                    <option value="12000">AirPods Pro 2 — 12 000 ₽</option>
                 </select>
             </div>
 
-            <!-- Ввод количества -->
             <div class="form-group">
                 <label for="quantityInput">Количество (шт.):</label>
-                <input type="text" id="quantityInput" class="form-control" placeholder="Введите число" required>
+                <input type="text" id="quantityInput" class="form-input" placeholder="Например: 3" required>
             </div>
 
-            <!-- Кнопка -->
-            <button type="submit" id="calculateBtn" class="btn-calculate">Рассчитать стоимость</button>
+            <button type="submit" id="calculateBtn" class="btn-calculate">Рассчитать</button>
         </form>
 
         <!-- Блок для вывода результата -->
