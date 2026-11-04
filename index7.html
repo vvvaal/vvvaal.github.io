@@ -46,7 +46,7 @@
         .carousel__viewport {
             position: relative;
             width: 100%;
-            height: 480px;
+            height: 520px;
             overflow: hidden;
         }
 
@@ -68,16 +68,20 @@
             cursor: pointer;
             border-radius: 16px;
             overflow: hidden;
-            background: #222;
+            background: #111418;
             box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55);
             pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
+        /* Фото целиком, без обрезки */
         .slide img {
             display: block;
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
         }
 
         .slide.is-active {
@@ -165,7 +169,7 @@
 
         @media (max-width: 640px) {
             .carousel__viewport {
-                height: 360px;
+                height: 380px;
             }
 
             .slide {
@@ -195,15 +199,14 @@
 
             <div class="carousel__viewport">
                 <div class="carousel__stage" id="stage">
-                    <figure class="slide"><img src="img1.jpg.jpg" alt="Изображение 1" width="1200" height="800"></figure>
-                    <figure class="slide"><img src="img2.jpg" alt="Изображение 2" width="1200" height="800"></figure>
-                    <figure class="slide"><img src="img3.jpg" alt="Изображение 3" width="1200" height="800"></figure>
-                    <figure class="slide"><img src="img4.jpg" alt="Изображение 4" width="1200" height="800"></figure>
-                    <figure class="slide"><img src="img5.jpg" alt="Изображение 5" width="1200" height="800"></figure>
-                    <figure class="slide"><img src="img6.jpg" alt="Изображение 6" width="1200" height="800"></figure>
-                    <figure class="slide"><img src="img7.jpg" alt="Изображение 7" width="1200" height="800"></figure>
-                    <figure class="slide"><img src="img8.jpg" alt="Изображение 8" width="1200" height="800"></figure>
-
+                    <figure class="slide"><img src="images/img1.jpg.jpg" alt="Изображение 1" width="1200" height="800"></figure>
+                    <figure class="slide"><img src="images/img2.jpg" alt="Изображение 2" width="1200" height="800"></figure>
+                    <figure class="slide"><img src="images/img3.jpg" alt="Изображение 3" width="1200" height="800"></figure>
+                    <figure class="slide"><img src="images/img4.jpg" alt="Изображение 4" width="1200" height="800"></figure>
+                    <figure class="slide"><img src="images/img5.jpg" alt="Изображение 5" width="1200" height="800"></figure>
+                    <figure class="slide"><img src="images/img6.jpg" alt="Изображение 6" width="1200" height="800"></figure>
+                    <figure class="slide"><img src="images/img7.jpg" alt="Изображение 7" width="1200" height="800"></figure>
+                    <figure class="slide"><img src="images/img8.jpg" alt="Изображение 8" width="1200" height="800"></figure>
                 </div>
             </div>
 
