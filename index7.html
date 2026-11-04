@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Галерея-слайдер — Задание 7</title>
+    <title>Карусель — Задание 7</title>
     <style>
         * {
             box-sizing: border-box;
@@ -13,132 +13,206 @@
 
         body {
             font-family: Arial, Helvetica, sans-serif;
-            background: #f4f4f4;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1a1d24;
+            color: #eaeaea;
             padding: 24px 16px;
-            color: #222;
         }
 
         .gallery {
-            max-width: 1000px;
-            margin: 0 auto;
+            width: 100%;
+            max-width: 1100px;
+            text-align: center;
         }
 
         .gallery__title {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 24px;
+            font-size: 26px;
+            font-weight: 600;
+            margin-bottom: 22px;
+            letter-spacing: 0.5px;
         }
 
-        .slider {
+        .carousel {
             position: relative;
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            gap: 12px;
         }
 
-        .slider__viewport {
+        .carousel__viewport {
+            position: relative;
+            width: 100%;
+            height: 480px;
             overflow: hidden;
-            flex: 1;
-            border-radius: 8px;
         }
 
-        .slider__track {
-            display: flex;
-            transition: transform 0.4s ease;
-            will-change: transform;
+        .carousel__stage {
+            position: relative;
+            width: 100%;
+            height: 100%;
         }
 
         .slide {
-            flex: 0 0 33.3333%;
-            padding: 0 6px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 88%;
+            height: 100%;
+            transform: translate(-50%, -50%) scale(0.6);
+            opacity: 0;
+            transition: transform 0.45s ease, opacity 0.45s ease, filter 0.45s ease;
+            cursor: pointer;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #222;
+            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55);
+            pointer-events: none;
         }
 
         .slide img {
             display: block;
             width: 100%;
-            height: 220px;
+            height: 100%;
             object-fit: cover;
-            border-radius: 8px;
         }
 
-        .slider__btn {
+        .slide.is-active {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+            z-index: 3;
+            filter: none;
+            pointer-events: auto;
+            cursor: default;
+        }
+
+        .slide.is-prev {
+            transform: translate(-112%, -50%) scale(0.7);
+            opacity: 0.35;
+            z-index: 2;
+            filter: brightness(0.5);
+            pointer-events: auto;
+        }
+
+        .slide.is-next {
+            transform: translate(12%, -50%) scale(0.7);
+            opacity: 0.35;
+            z-index: 2;
+            filter: brightness(0.5);
+            pointer-events: auto;
+        }
+
+        .carousel__btn {
             flex: 0 0 auto;
-            width: 44px;
-            height: 44px;
+            width: 52px;
+            height: 52px;
             border: none;
             border-radius: 50%;
             background: #2b6cb0;
             color: #fff;
-            font-size: 18px;
+            font-size: 22px;
+            line-height: 1;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: background 0.2s, transform 0.15s;
+            z-index: 10;
+            box-shadow: 0 6px 18px rgba(43, 108, 176, 0.4);
         }
 
-        .slider__btn:hover {
-            background: #1e4e8c;
+        .carousel__btn:hover {
+            background: #3a86d1;
         }
 
-        .slider__btn:disabled {
-            background: #b9c6d6;
-            cursor: default;
+        .carousel__btn:active {
+            transform: scale(0.92);
         }
 
         .pager {
-            margin-top: 16px;
-            text-align: center;
-            font-size: 16px;
-            user-select: none;
+            margin-top: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
-        .pager__current {
-            font-weight: bold;
-            color: #2b6cb0;
+        .pager__dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: none;
+            padding: 0;
+            background: #3a3f4b;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .pager__dot.is-active {
+            background: #2b6cb0;
+            transform: scale(1.4);
+        }
+
+        .pager__counter {
+            margin-top: 10px;
+            font-size: 15px;
+            color: #9aa3b2;
+        }
+
+        .pager__counter strong {
+            color: #fff;
         }
 
         @media (max-width: 640px) {
+            .carousel__viewport {
+                height: 360px;
+            }
+
             .slide {
-                flex: 0 0 100%;
+                width: 94%;
             }
 
-            .slide img {
-                height: 200px;
+            .slide.is-prev,
+            .slide.is-next {
+                opacity: 0;
+                pointer-events: none;
             }
 
-            .slider__btn {
-                width: 38px;
-                height: 38px;
-                font-size: 16px;
+            .carousel__btn {
+                width: 44px;
+                height: 44px;
+                font-size: 18px;
             }
         }
     </style>
 </head>
 <body>
     <main class="gallery">
-        <h1 class="gallery__title">Галерея</h1>
+        <h1 class="gallery__title">Карусель</h1>
 
-        <div class="slider">
-            <button class="slider__btn slider__btn--prev" type="button" aria-label="Предыдущий слайд">&#10094;</button>
+        <div class="carousel">
+            <button class="carousel__btn carousel__btn--prev" type="button" aria-label="Предыдущее изображение">&#10094;</button>
 
-            <div class="slider__viewport">
-                <div class="slider__track" id="track">
-                    <figure class="slide"><img src="img1.jpg" alt="Изображение 1" width="600" height="400"></figure>
-                    <figure class="slide"><img src="img2.jpg" alt="Изображение 2" width="600" height="400"></figure>
-                    <figure class="slide"><img src="img3.jpg" alt="Изображение 3" width="600" height="400"></figure>
-                    <figure class="slide"><img src="img4.jpg" alt="Изображение 4" width="600" height="400"></figure>
-                    <figure class="slide"><img src="img5.jpg" alt="Изображение 5" width="600" height="400"></figure>
-                    <figure class="slide"><img src="img6.jpg" alt="Изображение 6" width="600" height="400"></figure>
-                    <figure class="slide"><img src="img7.jpg" alt="Изображение 7" width="600" height="400"></figure>
-                    <figure class="slide"><img src="img8.jpg" alt="Изображение 8" width="600" height="400"></figure>
+            <div class="carousel__viewport">
+                <div class="carousel__stage" id="stage">
+                    <figure class="slide"><img src="images/img1.jpg" alt="Изображение 1" width="1200" height="800"></figure>
+                    <figure class="slide"><img src="images/img2.jpg" alt="Изображение 2" width="1200" height="800"></figure>
+                    <figure class="slide"><img src="images/img3.jpg" alt="Изображение 3" width="1200" height="800"></figure>
+                    <figure class="slide"><img src="images/img4.jpg" alt="Изображение 4" width="1200" height="800"></figure>
+                    <figure class="slide"><img src="images/img5.jpg" alt="Изображение 5" width="1200" height="800"></figure>
+                    <figure class="slide"><img src="images/img6.jpg" alt="Изображение 6" width="1200" height="800"></figure>
+                    <figure class="slide"><img src="images/img7.jpg" alt="Изображение 7" width="1200" height="800"></figure>
+                    <figure class="slide"><img src="images/img8.jpg" alt="Изображение 8" width="1200" height="800"></figure>
                 </div>
             </div>
 
-            <button class="slider__btn slider__btn--next" type="button" aria-label="Следующий слайд">&#10095;</button>
+            <button class="carousel__btn carousel__btn--next" type="button" aria-label="Следующее изображение">&#10095;</button>
         </div>
 
-        <div class="pager" id="pager" aria-live="polite">
-            <span class="pager__current" id="pagerCurrent">1</span>
-            <span class="pager__sep">/</span>
-            <span class="pager__total" id="pagerTotal">3</span>
+        <div class="pager" id="pager" aria-label="Навигация по слайдам"></div>
+
+        <div class="pager__counter" aria-live="polite">
+            <strong id="pagerCurrent">1</strong> / <span id="pagerTotal">8</span>
         </div>
     </main>
 
@@ -146,57 +220,81 @@
         (function () {
             "use strict";
 
-            var track = document.getElementById("track");
-            var prevBtn = document.querySelector(".slider__btn--prev");
-            var nextBtn = document.querySelector(".slider__btn--next");
+            var stage = document.getElementById("stage");
+            var prevBtn = document.querySelector(".carousel__btn--prev");
+            var nextBtn = document.querySelector(".carousel__btn--next");
+            var pager = document.getElementById("pager");
             var pagerCurrent = document.getElementById("pagerCurrent");
             var pagerTotal = document.getElementById("pagerTotal");
 
-            var slides = track.querySelectorAll(".slide");
-            var totalSlides = slides.length;
-            var currentIndex = 0;
+            var slides = Array.prototype.slice.call(stage.querySelectorAll(".slide"));
+            var total = slides.length;
+            var current = 0;
+            var dots = [];
 
-            function getVisibleCount() {
-                return window.matchMedia("(max-width: 640px)").matches ? 1 : 3;
-            }
+            pagerTotal.textContent = String(total);
 
-            function getPageCount() {
-                return Math.ceil(totalSlides / getVisibleCount());
-            }
+            slides.forEach(function (_, i) {
+                var dot = document.createElement("button");
+                dot.type = "button";
+                dot.className = "pager__dot";
+                dot.setAttribute("aria-label", "Перейти к изображению " + (i + 1));
+                dot.addEventListener("click", function () {
+                    goTo(i);
+                });
+                pager.appendChild(dot);
+                dots.push(dot);
+            });
 
-            function getSlideWidth() {
-                return 100 / getVisibleCount();
+            function wrap(index) {
+                return (index + total) % total;
             }
 
             function render() {
-                var slideWidth = getSlideWidth();
-                track.style.transform = "translateX(-" + (currentIndex * slideWidth) + "%)";
+                var prevIndex = wrap(current - 1);
+                var nextIndex = wrap(current + 1);
 
-                var pageCount = getPageCount();
-                var currentPage = Math.floor(currentIndex / getVisibleCount()) + 1;
-                pagerCurrent.textContent = String(currentPage);
-                pagerTotal.textContent = String(pageCount);
+                slides.forEach(function (slide, i) {
+                    slide.classList.remove("is-active", "is-prev", "is-next");
+                    if (i === current) {
+                        slide.classList.add("is-active");
+                    } else if (i === prevIndex) {
+                        slide.classList.add("is-prev");
+                    } else if (i === nextIndex) {
+                        slide.classList.add("is-next");
+                    }
+                });
 
-                prevBtn.disabled = currentIndex <= 0;
-                nextBtn.disabled = currentIndex >= totalSlides - getVisibleCount();
+                dots.forEach(function (dot, i) {
+                    dot.classList.toggle("is-active", i === current);
+                });
+
+                pagerCurrent.textContent = String(current + 1);
+            }
+
+            function goTo(index) {
+                current = wrap(index);
+                render();
             }
 
             function goPrev() {
-                if (currentIndex > 0) {
-                    currentIndex -= 1;
-                    render();
-                }
+                goTo(current - 1);
             }
 
             function goNext() {
-                if (currentIndex < totalSlides - getVisibleCount()) {
-                    currentIndex += 1;
-                    render();
-                }
+                goTo(current + 1);
             }
 
             prevBtn.addEventListener("click", goPrev);
             nextBtn.addEventListener("click", goNext);
+
+            slides.forEach(function (slide, i) {
+                slide.addEventListener("click", function () {
+                    if (i !== current) {
+                        goTo(i);
+                    }
+                });
+            });
 
             document.addEventListener("keydown", function (event) {
                 if (event.key === "ArrowLeft") {
@@ -206,12 +304,28 @@
                 }
             });
 
-            window.addEventListener("resize", function () {
-                var maxIndex = totalSlides - getVisibleCount();
-                if (currentIndex > maxIndex) {
-                    currentIndex = maxIndex;
+            var startX = 0;
+            var isTouching = false;
+
+            stage.addEventListener("touchstart", function (event) {
+                startX = event.touches[0].clientX;
+                isTouching = true;
+            }, { passive: true });
+
+            stage.addEventListener("touchend", function (event) {
+                if (!isTouching) {
+                    return;
                 }
-                render();
+                isTouching = false;
+                var endX = event.changedTouches[0].clientX;
+                var diff = endX - startX;
+                if (Math.abs(diff) > 40) {
+                    if (diff < 0) {
+                        goNext();
+                    } else {
+                        goPrev();
+                    }
+                }
             });
 
             render();
