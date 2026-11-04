@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор стоимости услуги — Задание 6</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1a1d24;
+            color: #eaeaea;
+            padding: 24px 16px;
+        }
+
+        .calc {
+            width: 100%;
+            max-width: 520px;
+            background: #232730;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .calc__title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 22px;
+            text-align: center;
+        }
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+        .field__label {
+            display: block;
+            font-size: 14px;
+            color: #9aa3b2;
+            margin-bottom: 6px;
+        }
+
+        .field__input,
+        .field__select {
+            width: 100%;
+            padding: 10px 12px;
+            font-size: 16px;
+            border: 1px solid #3a3f4b;
+            border-radius: 8px;
+            background: #1a1d24;
+            color: #eaeaea;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .field__input:focus,
+        .field__select:focus {
+            border-color: #2b6cb0;
+        }
+
+        fieldset {
+            border: none;
+            margin-bottom: 18px;
+        }
+
+        legend {
+            font-size: 14px;
+            color: #9aa3b2;
+            margin-bottom: 8px;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .radio-group label,
+        .checkbox label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .radio-group input,
+        .checkbox input {
+            accent-color: #2b6cb0;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .checkbox {
+            margin-bottom: 18px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .total {
+            margin-top: 24px;
+            padding-top: 18px;
+            border-top: 1px solid #3a3f4b;
+            text-align: center;
+        }
+
+        .total__label {
+            font-size: 14px;
+            color: #9aa3b2;
+            margin-bottom: 6px;
+        }
+
+        .total__value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #4fa3ff;
+        }
+
+        .total__value small {
+            font-size: 16px;
+            color: #9aa3b2;
+            font-weight: 400;
+        }
+
+        @media (max-width: 480px) {
+            .calc {
+                padding: 20px;
+            }
+
+            .total__value {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="calc">
+        <h1 class="calc__title">Калькулятор стоимости услуги</h1>
+
+        <form id="calcForm" novalidate>
+            <div class="field">
+                <label class="field__label" for="qty">Количество</label>
+                <input class="field__input" type="number" id="qty" name="qty" value="1" min="1" max="100" step="1">
+            </div>
+
+            <fieldset>
+                <legend>Тип услуги</legend>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="service" value="basic" checked>
+                        Базовая — 500 ₽ / ед.
+                    </label>
+                    <label>
+                        <input type="radio" name="service" value="standard">
+                        Стандарт — 800 ₽ / ед.
+                    </label>
+                    <label>
+                        <input type="radio" name="service" value="premium">
+                        Премиум — 1200 ₽ / ед.
+                    </label>
+                </div>
+            </fieldset>
+
+            <div class="field hidden" id="optionsField">
+                <label class="field__label" for="option">Опция</label>
+                <select class="field__select" id="option" name="option">
+                    <option value="0">Без опции (+0 ₽)</option>
+                    <option value="200">Ускорение (+200 ₽ / ед.)</option>
+                    <option value="350">Расширенная гарантия (+350 ₽ / ед.)</option>
+                    <option value="500">VIP-поддержка (+500 ₽ / ед.)</option>
+                </select>
+            </div>
+
+            <div class="checkbox hidden" id="propertyField">
+                <label>
+                    <input type="checkbox" id="property" name="property" value="300">
+                    Приоритетная обработка (+300 ₽ / ед.)
+                </label>
+            </div>
+        </form>
+
+        <div class="total" aria-live="polite">
+            <div class="total__label">Итого</div>
+            <div class="total__value"><span id="total">500</span> <small>₽</small></div>
+        </div>
+    </main>
+
+    <script>
+        (function () {
+            "use strict";
+
+            var form = document.getElementById("calcForm");
+            var qtyInput = document.getElementById("qty");
+            var serviceRadios = document.querySelectorAll("input[name='service']");
+            var optionsField = document.getElementById("optionsField");
+            var optionSelect = document.getElementById("option");
+            var propertyField = document.getElementById("propertyField");
+            var propertyCheckbox = document.getElementById("property");
+            var totalOutput = document.getElementById("total");
+
+            var PRICES = {
+                basic: 500,
+                standard: 800,
+                premium: 1200
+            };
+
+            function getSelectedService() {
+                var i;
+                for (i = 0; i < serviceRadios.length; i += 1) {
+                    if (serviceRadios[i].checked) {
+                        return serviceRadios[i].value;
+                    }
+                }
+                return "basic";
+            }
+
+            function toggleFields(service) {
+                if (service === "standard") {
+                    optionsField.classList.remove("hidden");
+                    propertyField.classList.add("hidden");
+                } else if (service === "premium") {
+                    optionsField.classList.add("hidden");
+                    propertyField.classList.remove("hidden");
+                } else {
+                    optionsField.classList.add("hidden");
+                    propertyField.classList.add("hidden");
+                }
+            }
+
+            function calculate() {
+                var service = getSelectedService();
+                var qty = parseInt(qtyInput.value, 10);
+
+                if (isNaN(qty) || qty < 1) {
+                    qty = 1;
+                }
+
+                var base = PRICES[service];
+                var extra = 0;
+
+                if (service === "standard") {
+                    extra = parseInt(optionSelect.value, 10) || 0;
+                } else if (service === "premium") {
+                    extra = propertyCheckbox.checked
+                        ? parseInt(propertyCheckbox.value, 10) || 0
+                        : 0;
+                }
+
+                var total = (base + extra) * qty;
+                totalOutput.textContent = String(total);
+            }
+
+            function handleChange() {
+                var service = getSelectedService();
+                toggleFields(service);
+                calculate();
+            }
+
+            // Слушатели событий
+            qtyInput.addEventListener("input", calculate);
+
+            var i;
+            for (i = 0; i < serviceRadios.length; i += 1) {
+                serviceRadios[i].addEventListener("change", handleChange);
+            }
+
+            optionSelect.addEventListener("change", calculate);
+            propertyCheckbox.addEventListener("change", calculate);
+
+            form.addEventListener("submit", function (event) {
+                event.preventDefault();
+            });
+
+            // Инициализация
+            handleChange();
+        }());
+    </script>
+</body>
+</html>
