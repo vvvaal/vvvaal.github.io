@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Галерея-слайдер — Задание 7</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f4f4;
+            padding: 24px 16px;
+            color: #222;
+        }
+
+        .gallery {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .gallery__title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .slider {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .slider__viewport {
+            overflow: hidden;
+            flex: 1;
+            border-radius: 8px;
+        }
+
+        .slider__track {
+            display: flex;
+            transition: transform 0.4s ease;
+            will-change: transform;
+        }
+
+        .slide {
+            flex: 0 0 33.3333%;
+            padding: 0 6px;
+        }
+
+        .slide img {
+            display: block;
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .slider__btn {
+            flex: 0 0 auto;
+            width: 44px;
+            height: 44px;
+            border: none;
+            border-radius: 50%;
+            background: #2b6cb0;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .slider__btn:hover {
+            background: #1e4e8c;
+        }
+
+        .slider__btn:disabled {
+            background: #b9c6d6;
+            cursor: default;
+        }
+
+        .pager {
+            margin-top: 16px;
+            text-align: center;
+            font-size: 16px;
+            user-select: none;
+        }
+
+        .pager__current {
+            font-weight: bold;
+            color: #2b6cb0;
+        }
+
+        @media (max-width: 640px) {
+            .slide {
+                flex: 0 0 100%;
+            }
+
+            .slide img {
+                height: 200px;
+            }
+
+            .slider__btn {
+                width: 38px;
+                height: 38px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="gallery">
+        <h1 class="gallery__title">Галерея</h1>
+
+        <div class="slider">
+            <button class="slider__btn slider__btn--prev" type="button" aria-label="Предыдущий слайд">&#10094;</button>
+
+            <div class="slider__viewport">
+                <div class="slider__track" id="track">
+                    <figure class="slide"><img src="https://picsum.photos/id/1011/600/400" alt="Изображение 1" width="600" height="400"></figure>
+                    <figure class="slide"><img src="https://picsum.photos/id/1012/600/400" alt="Изображение 2" width="600" height="400"></figure>
+                    <figure class="slide"><img src="https://picsum.photos/id/1013/600/400" alt="Изображение 3" width="600" height="400"></figure>
+                    <figure class="slide"><img src="https://picsum.photos/id/1014/600/400" alt="Изображение 4" width="600" height="400"></figure>
+                    <figure class="slide"><img src="https://picsum.photos/id/1015/600/400" alt="Изображение 5" width="600" height="400"></figure>
+                    <figure class="slide"><img src="https://picsum.photos/id/1016/600/400" alt="Изображение 6" width="600" height="400"></figure>
+                    <figure class="slide"><img src="https://picsum.photos/id/1018/600/400" alt="Изображение 7" width="600" height="400"></figure>
+                    <figure class="slide"><img src="https://picsum.photos/id/1019/600/400" alt="Изображение 8" width="600" height="400"></figure>
+                </div>
+            </div>
+
+            <button class="slider__btn slider__btn--next" type="button" aria-label="Следующий слайд">&#10095;</button>
+        </div>
+
+        <div class="pager" id="pager" aria-live="polite">
+            <span class="pager__current" id="pagerCurrent">1</span>
+            <span class="pager__sep">/</span>
+            <span class="pager__total" id="pagerTotal">3</span>
+        </div>
+    </main>
+
+    <script>
+        (function () {
+            "use strict";
+
+            var track = document.getElementById("track");
+            var prevBtn = document.querySelector(".slider__btn--prev");
+            var nextBtn = document.querySelector(".slider__btn--next");
+            var pagerCurrent = document.getElementById("pagerCurrent");
+            var pagerTotal = document.getElementById("pagerTotal");
+
+            var slides = track.querySelectorAll(".slide");
+            var totalSlides = slides.length;
+            var currentIndex = 0;
+
+            function getVisibleCount() {
+                return window.matchMedia("(max-width: 640px)").matches ? 1 : 3;
+            }
+
+            function getPageCount() {
+                return Math.ceil(totalSlides / getVisibleCount());
+            }
+
+            function getSlideWidth() {
+                return 100 / getVisibleCount();
+            }
+
+            function render() {
+                var slideWidth = getSlideWidth();
+                track.style.transform = "translateX(-" + (currentIndex * slideWidth) + "%)";
+
+                var pageCount = getPageCount();
+                var currentPage = Math.floor(currentIndex / getVisibleCount()) + 1;
+                pagerCurrent.textContent = String(currentPage);
+                pagerTotal.textContent = String(pageCount);
+
+                prevBtn.disabled = currentIndex <= 0;
+                nextBtn.disabled = currentIndex >= totalSlides - getVisibleCount();
+            }
+
+            function goPrev() {
+                if (currentIndex > 0) {
+                    currentIndex -= 1;
+                    render();
+                }
+            }
+
+            function goNext() {
+                if (currentIndex < totalSlides - getVisibleCount()) {
+                    currentIndex += 1;
+                    render();
+                }
+            }
+
+            prevBtn.addEventListener("click", goPrev);
+            nextBtn.addEventListener("click", goNext);
+
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "ArrowLeft") {
+                    goPrev();
+                } else if (event.key === "ArrowRight") {
+                    goNext();
+                }
+            });
+
+            window.addEventListener("resize", function () {
+                var maxIndex = totalSlides - getVisibleCount();
+                if (currentIndex > maxIndex) {
+                    currentIndex = maxIndex;
+                }
+                render();
+            });
+
+            render();
+        }());
+    </script>
+</body>
+</html>
