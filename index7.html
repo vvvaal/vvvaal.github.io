@@ -43,10 +43,11 @@
             gap: 12px;
         }
 
+        /* Пропорции вьюпорта фиксированы 4:3 (как у фото 800x600) */
         .carousel__viewport {
             position: relative;
             width: 100%;
-            height: 520px;
+            aspect-ratio: 4 / 3;
             overflow: hidden;
         }
 
@@ -76,12 +77,15 @@
             justify-content: center;
         }
 
-        /* Фото целиком, без обрезки */
+        /* Все фото строго одного размера 800x600 */
         .slide img {
             display: block;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+            width: 800px;
+            height: 600px;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; /* фото целиком, без обрезки. Замени на cover — без полей, с обрезкой */
+            background: #111418;
         }
 
         .slide.is-active {
@@ -168,12 +172,13 @@
         }
 
         @media (max-width: 640px) {
-            .carousel__viewport {
-                height: 380px;
-            }
-
             .slide {
                 width: 94%;
+            }
+
+            .slide img {
+                width: 100%;
+                height: 100%;
             }
 
             .slide.is-prev,
@@ -199,14 +204,14 @@
 
             <div class="carousel__viewport">
                 <div class="carousel__stage" id="stage">
-                    <figure class="slide"><img src="img1.jpg.jpg" alt="Изображение 1" width="1200" height="800"></figure>
-                    <figure class="slide"><img src="img2.jpg" alt="Изображение 2" width="1200" height="800"></figure>
-                    <figure class="slide"><img src="img3.jpg" alt="Изображение 3" width="1200" height="800"></figure>
-                    <figure class="slide"><img src="img4.jpg" alt="Изображение 4" width="1200" height="800"></figure>
-                    <figure class="slide"><img src="img5.jpg" alt="Изображение 5" width="1200" height="800"></figure>
-                    <figure class="slide"><img src="img6.jpg" alt="Изображение 6" width="1200" height="800"></figure>
-                    <figure class="slide"><img src="img7.jpg" alt="Изображение 7" width="1200" height="800"></figure>
-                    <figure class="slide"><img src="img8.jpg" alt="Изображение 8" width="1200" height="800"></figure>
+                    <figure class="slide"><img src="img1.jpg" alt="Изображение 1" width="800" height="600"></figure>
+                    <figure class="slide"><img src="img2.jpg" alt="Изображение 2" width="800" height="600"></figure>
+                    <figure class="slide"><img src="img3.jpg" alt="Изображение 3" width="800" height="600"></figure>
+                    <figure class="slide"><img src="img4.jpg" alt="Изображение 4" width="800" height="600"></figure>
+                    <figure class="slide"><img src="img5.jpg" alt="Изображение 5" width="800" height="600"></figure>
+                    <figure class="slide"><img src="img6.jpg" alt="Изображение 6" width="800" height="600"></figure>
+                    <figure class="slide"><img src="img7.jpg" alt="Изображение 7" width="800" height="600"></figure>
+                    <figure class="slide"><img src="img8.jpg" alt="Изображение 8" width="800" height="600"></figure>
                 </div>
             </div>
 
