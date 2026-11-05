@@ -24,14 +24,14 @@
 
         .gallery {
             width: 100%;
-            max-width: 1100px;
+            max-width: 700px; /* Уменьшено с 1100px */
             text-align: center;
         }
 
         .gallery__title {
-            font-size: 26px;
+            font-size: 22px;
             font-weight: 600;
-            margin-bottom: 22px;
+            margin-bottom: 16px;
             letter-spacing: 0.5px;
         }
 
@@ -40,14 +40,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
+            gap: 10px;
         }
 
-        /* Пропорции вьюпорта фиксированы 4:3 (как у фото 800x600) */
         .carousel__viewport {
             position: relative;
             width: 100%;
-            aspect-ratio: 4 / 3;
+            aspect-ratio: 4 / 3; /* Пропорции слайда */
             overflow: hidden;
         }
 
@@ -67,25 +66,22 @@
             opacity: 0;
             transition: transform 0.45s ease, opacity 0.45s ease, filter 0.45s ease;
             cursor: pointer;
-            border-radius: 16px;
+            border-radius: 12px;
             overflow: hidden;
             background: #111418;
-            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.55);
             pointer-events: none;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        /* Все фото строго одного размера 800x600 */
+        /* ГЛАВНОЕ: фото заполняет весь слайд без рамок */
         .slide img {
             display: block;
-            width: 800px;
-            height: 600px;
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain; /* фото целиком, без обрезки. Замени на cover — без полей, с обрезкой */
-            background: #111418;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Заполняет всё, лишнее обрезается */
         }
 
         .slide.is-active {
@@ -115,18 +111,18 @@
 
         .carousel__btn {
             flex: 0 0 auto;
-            width: 52px;
-            height: 52px;
+            width: 42px; /* Уменьшено с 52px */
+            height: 42px;
             border: none;
             border-radius: 50%;
             background: #2b6cb0;
             color: #fff;
-            font-size: 22px;
+            font-size: 18px;
             line-height: 1;
             cursor: pointer;
             transition: background 0.2s, transform 0.15s;
             z-index: 10;
-            box-shadow: 0 6px 18px rgba(43, 108, 176, 0.4);
+            box-shadow: 0 4px 12px rgba(43, 108, 176, 0.4);
         }
 
         .carousel__btn:hover {
@@ -138,16 +134,16 @@
         }
 
         .pager {
-            margin-top: 24px;
+            margin-top: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .pager__dot {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             border: none;
             padding: 0;
@@ -162,8 +158,8 @@
         }
 
         .pager__counter {
-            margin-top: 10px;
-            font-size: 15px;
+            margin-top: 8px;
+            font-size: 13px;
             color: #9aa3b2;
         }
 
@@ -172,13 +168,12 @@
         }
 
         @media (max-width: 640px) {
-            .slide {
-                width: 94%;
+            .gallery {
+                max-width: 100%;
             }
 
-            .slide img {
-                width: 100%;
-                height: 100%;
+            .slide {
+                width: 94%;
             }
 
             .slide.is-prev,
@@ -188,9 +183,9 @@
             }
 
             .carousel__btn {
-                width: 44px;
-                height: 44px;
-                font-size: 18px;
+                width: 36px;
+                height: 36px;
+                font-size: 16px;
             }
         }
     </style>
@@ -204,14 +199,14 @@
 
             <div class="carousel__viewport">
                 <div class="carousel__stage" id="stage">
-                    <figure class="slide"><img src="img1.jpg" alt="Изображение 1" width="800" height="600"></figure>
-                    <figure class="slide"><img src="img2.jpg" alt="Изображение 2" width="800" height="600"></figure>
-                    <figure class="slide"><img src="img3.jpg" alt="Изображение 3" width="800" height="600"></figure>
-                    <figure class="slide"><img src="img4.jpg" alt="Изображение 4" width="800" height="600"></figure>
-                    <figure class="slide"><img src="img5.jpg" alt="Изображение 5" width="800" height="600"></figure>
-                    <figure class="slide"><img src="img6.jpg" alt="Изображение 6" width="800" height="600"></figure>
-                    <figure class="slide"><img src="img7.jpg" alt="Изображение 7" width="800" height="600"></figure>
-                    <figure class="slide"><img src="img8.jpg" alt="Изображение 8" width="800" height="600"></figure>
+                    <figure class="slide"><img src="img1.jpg" alt="Изображение 1"></figure>
+                    <figure class="slide"><img src="img2.jpg" alt="Изображение 2"></figure>
+                    <figure class="slide"><img src="img3.jpg" alt="Изображение 3"></figure>
+                    <figure class="slide"><img src="img4.jpg" alt="Изображение 4"></figure>
+                    <figure class="slide"><img src="img5.jpg" alt="Изображение 5"></figure>
+                    <figure class="slide"><img src="img6.jpg" alt="Изображение 6"></figure>
+                    <figure class="slide"><img src="img7.jpg" alt="Изображение 7"></figure>
+                    <figure class="slide"><img src="img8.jpg" alt="Изображение 8"></figure>
                 </div>
             </div>
 
