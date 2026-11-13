@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Карусель — Задание 7</title>
+    <title>Галерея — Задание 7</title>
     <style>
         * {
             box-sizing: border-box;
@@ -24,7 +24,7 @@
 
         .gallery {
             width: 100%;
-            max-width: 700px; /* Уменьшено с 1100px */
+            max-width: 960px;
             text-align: center;
         }
 
@@ -36,82 +36,40 @@
         }
 
         .carousel {
-            position: relative;
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 10px;
         }
 
         .carousel__viewport {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 4 / 3; /* Пропорции слайда */
+            flex: 1 1 auto;
             overflow: hidden;
+            border-radius: 12px;
         }
 
-        .carousel__stage {
-            position: relative;
-            width: 100%;
-            height: 100%;
+        .carousel__track {
+            display: flex;
+            transition: transform 0.4s ease;
+            will-change: transform;
         }
 
         .slide {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 88%;
-            height: 100%;
-            transform: translate(-50%, -50%) scale(0.6);
-            opacity: 0;
-            transition: transform 0.45s ease, opacity 0.45s ease, filter 0.45s ease;
-            cursor: pointer;
-            border-radius: 12px;
-            overflow: hidden;
-            background: #111418;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.55);
-            pointer-events: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            flex: 0 0 33.3333%;
+            padding: 0 4px;
         }
 
-        /* ГЛАВНОЕ: фото заполняет весь слайд без рамок */
         .slide img {
             display: block;
             width: 100%;
-            height: 100%;
-            object-fit: cover; /* Заполняет всё, лишнее обрезается */
-        }
-
-        .slide.is-active {
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 1;
-            z-index: 3;
-            filter: none;
-            pointer-events: auto;
-            cursor: default;
-        }
-
-        .slide.is-prev {
-            transform: translate(-112%, -50%) scale(0.7);
-            opacity: 0.35;
-            z-index: 2;
-            filter: brightness(0.5);
-            pointer-events: auto;
-        }
-
-        .slide.is-next {
-            transform: translate(12%, -50%) scale(0.7);
-            opacity: 0.35;
-            z-index: 2;
-            filter: brightness(0.5);
-            pointer-events: auto;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            border-radius: 8px;
+            background: #111418;
         }
 
         .carousel__btn {
             flex: 0 0 auto;
-            width: 42px; /* Уменьшено с 52px */
+            width: 42px;
             height: 42px;
             border: none;
             border-radius: 50%;
@@ -121,7 +79,6 @@
             line-height: 1;
             cursor: pointer;
             transition: background 0.2s, transform 0.15s;
-            z-index: 10;
             box-shadow: 0 4px 12px rgba(43, 108, 176, 0.4);
         }
 
@@ -133,6 +90,11 @@
             transform: scale(0.92);
         }
 
+        .carousel__btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
         .pager {
             margin-top: 18px;
             display: flex;
@@ -142,8 +104,8 @@
         }
 
         .pager__dot {
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             border: none;
             padding: 0;
@@ -173,13 +135,7 @@
             }
 
             .slide {
-                width: 94%;
-            }
-
-            .slide.is-prev,
-            .slide.is-next {
-                opacity: 0;
-                pointer-events: none;
+                flex-basis: 100%;
             }
 
             .carousel__btn {
@@ -192,31 +148,31 @@
 </head>
 <body>
     <main class="gallery">
-        <h1 class="gallery__title">Карусель</h1>
+        <h1 class="gallery__title">Галерея</h1>
 
         <div class="carousel">
-            <button class="carousel__btn carousel__btn--prev" type="button" aria-label="Предыдущее изображение">&#10094;</button>
+            <button class="carousel__btn carousel__btn--prev" type="button" aria-label="Предыдущая страница">&#10094;</button>
 
             <div class="carousel__viewport">
-                <div class="carousel__stage" id="stage">
-                    <figure class="slide"><img src="img1.jpg" alt="Изображение 1"></figure>
-                    <figure class="slide"><img src="img2.jpg" alt="Изображение 2"></figure>
-                    <figure class="slide"><img src="img3.jpg" alt="Изображение 3"></figure>
-                    <figure class="slide"><img src="img4.jpg" alt="Изображение 4"></figure>
-                    <figure class="slide"><img src="img5.jpg" alt="Изображение 5"></figure>
-                    <figure class="slide"><img src="img6.jpg" alt="Изображение 6"></figure>
-                    <figure class="slide"><img src="img7.jpg" alt="Изображение 7"></figure>
-                    <figure class="slide"><img src="img8.jpg" alt="Изображение 8"></figure>
+                <div class="carousel__track" id="track">
+                    <figure class="slide"><img src="https://picsum.photos/id/1015/800/600" alt="Горное озеро" loading="lazy"></figure>
+                    <figure class="slide"><img src="https://picsum.photos/id/1016/800/600" alt="Горная река" loading="lazy"></figure>
+                    <figure class="slide"><img src="https://picsum.photos/id/1018/800/600" alt="Водопад" loading="lazy"></figure>
+                    <figure class="slide"><img src="https://picsum.photos/id/1019/800/600" alt="Лес" loading="lazy"></figure>
+                    <figure class="slide"><img src="https://picsum.photos/id/1020/800/600" alt="Пляж" loading="lazy"></figure>
+                    <figure class="slide"><img src="https://picsum.photos/id/1021/800/600" alt="Дюны" loading="lazy"></figure>
+                    <figure class="slide"><img src="https://picsum.photos/id/1022/800/600" alt="Пустыня" loading="lazy"></figure>
+                    <figure class="slide"><img src="https://picsum.photos/id/1023/800/600" alt="Скалы" loading="lazy"></figure>
                 </div>
             </div>
 
-            <button class="carousel__btn carousel__btn--next" type="button" aria-label="Следующее изображение">&#10095;</button>
+            <button class="carousel__btn carousel__btn--next" type="button" aria-label="Следующая страница">&#10095;</button>
         </div>
 
-        <div class="pager" id="pager" aria-label="Навигация по слайдам"></div>
+        <div class="pager" id="pager" aria-label="Навигация по страницам"></div>
 
         <div class="pager__counter" aria-live="polite">
-            <strong id="pagerCurrent">1</strong> / <span id="pagerTotal">8</span>
+            Страница <strong id="pagerCurrent">1</strong> из <span id="pagerTotal">1</span>
         </div>
     </main>
 
@@ -224,81 +180,94 @@
         (function () {
             "use strict";
 
-            var stage = document.getElementById("stage");
+            var track = document.getElementById("track");
             var prevBtn = document.querySelector(".carousel__btn--prev");
             var nextBtn = document.querySelector(".carousel__btn--next");
             var pager = document.getElementById("pager");
             var pagerCurrent = document.getElementById("pagerCurrent");
             var pagerTotal = document.getElementById("pagerTotal");
 
-            var slides = Array.prototype.slice.call(stage.querySelectorAll(".slide"));
-            var total = slides.length;
-            var current = 0;
+            var slides = Array.prototype.slice.call(track.children);
+            var totalSlides = slides.length;
+            var currentPage = 0;
+            var perView = 3;
+            var pages = 1;
             var dots = [];
 
-            pagerTotal.textContent = String(total);
+            function getPerView() {
+                return window.matchMedia("(max-width: 640px)").matches ? 1 : 3;
+            }
 
-            slides.forEach(function (_, i) {
-                var dot = document.createElement("button");
-                dot.type = "button";
-                dot.className = "pager__dot";
-                dot.setAttribute("aria-label", "Перейти к изображению " + (i + 1));
-                dot.addEventListener("click", function () {
-                    goTo(i);
-                });
-                pager.appendChild(dot);
-                dots.push(dot);
-            });
+            function calcPages() {
+                return Math.max(1, Math.ceil(totalSlides / perView));
+            }
 
-            function wrap(index) {
-                return (index + total) % total;
+            function buildPager() {
+                var i;
+                pager.innerHTML = "";
+                dots = [];
+                for (i = 0; i < pages; i += 1) {
+                    (function (index) {
+                        var dot = document.createElement("button");
+                        dot.type = "button";
+                        dot.className = "pager__dot";
+                        dot.setAttribute("aria-label", "Перейти к странице " + (index + 1));
+                        dot.addEventListener("click", function () {
+                            goTo(index);
+                        });
+                        pager.appendChild(dot);
+                        dots.push(dot);
+                    }(i));
+                }
+                pagerTotal.textContent = String(pages);
             }
 
             function render() {
-                var prevIndex = wrap(current - 1);
-                var nextIndex = wrap(current + 1);
+                var maxPage = pages - 1;
+                var offset;
+                var i;
 
-                slides.forEach(function (slide, i) {
-                    slide.classList.remove("is-active", "is-prev", "is-next");
-                    if (i === current) {
-                        slide.classList.add("is-active");
-                    } else if (i === prevIndex) {
-                        slide.classList.add("is-prev");
-                    } else if (i === nextIndex) {
-                        slide.classList.add("is-next");
-                    }
-                });
+                if (currentPage > maxPage) {
+                    currentPage = maxPage;
+                }
+                if (currentPage < 0) {
+                    currentPage = 0;
+                }
 
-                dots.forEach(function (dot, i) {
-                    dot.classList.toggle("is-active", i === current);
-                });
+                offset = currentPage * perView * 100;
+                track.style.transform = "translateX(-" + offset + "%)";
 
-                pagerCurrent.textContent = String(current + 1);
+                for (i = 0; i < dots.length; i += 1) {
+                    dots[i].classList.toggle("is-active", i === currentPage);
+                }
+
+                pagerCurrent.textContent = String(currentPage + 1);
+                prevBtn.disabled = currentPage === 0;
+                nextBtn.disabled = currentPage === maxPage;
             }
 
-            function goTo(index) {
-                current = wrap(index);
+            function goTo(page) {
+                currentPage = page;
                 render();
             }
 
             function goPrev() {
-                goTo(current - 1);
+                goTo(currentPage - 1);
             }
 
             function goNext() {
-                goTo(current + 1);
+                goTo(currentPage + 1);
+            }
+
+            function recalc() {
+                perView = getPerView();
+                pages = calcPages();
+                buildPager();
+                render();
             }
 
             prevBtn.addEventListener("click", goPrev);
             nextBtn.addEventListener("click", goNext);
-
-            slides.forEach(function (slide, i) {
-                slide.addEventListener("click", function () {
-                    if (i !== current) {
-                        goTo(i);
-                    }
-                });
-            });
 
             document.addEventListener("keydown", function (event) {
                 if (event.key === "ArrowLeft") {
@@ -311,18 +280,20 @@
             var startX = 0;
             var isTouching = false;
 
-            stage.addEventListener("touchstart", function (event) {
+            track.addEventListener("touchstart", function (event) {
                 startX = event.touches[0].clientX;
                 isTouching = true;
             }, { passive: true });
 
-            stage.addEventListener("touchend", function (event) {
+            track.addEventListener("touchend", function (event) {
+                var endX;
+                var diff;
                 if (!isTouching) {
                     return;
                 }
                 isTouching = false;
-                var endX = event.changedTouches[0].clientX;
-                var diff = endX - startX;
+                endX = event.changedTouches[0].clientX;
+                diff = endX - startX;
                 if (Math.abs(diff) > 40) {
                     if (diff < 0) {
                         goNext();
@@ -332,7 +303,9 @@
                 }
             });
 
-            render();
+            window.addEventListener("resize", recalc);
+
+            recalc();
         }());
     </script>
 </body>
