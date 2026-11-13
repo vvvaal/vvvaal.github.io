@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Галерея — Задание 7</title>
+    <title>Галерея</title>
     <style>
         * {
             box-sizing: border-box;
@@ -17,28 +17,34 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #1a1d24;
-            color: #eaeaea;
+            background: #edf2f7;
             padding: 24px 16px;
         }
 
         .gallery {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 32px 24px;
             width: 100%;
-            max-width: 960px;
-            text-align: center;
+            max-width: 1000px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .gallery__title {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 600;
-            margin-bottom: 16px;
-            letter-spacing: 0.5px;
+            color: #1a365d;
+            margin-bottom: 24px;
         }
 
         .carousel {
             display: flex;
             align-items: center;
-            gap: 10px;
+            width: 100%;
+            gap: 20px;
         }
 
         .carousel__viewport {
@@ -49,45 +55,51 @@
 
         .carousel__track {
             display: flex;
-            transition: transform 0.4s ease;
+            transition: transform 0.4s ease-in-out;
             will-change: transform;
         }
 
         .slide {
             flex: 0 0 33.3333%;
-            padding: 0 4px;
+            padding: 0 10px;
+            display: flex;
+            justify-content: center;
         }
 
         .slide img {
             display: block;
             width: 100%;
-            aspect-ratio: 4 / 3;
+            aspect-ratio: 1 / 1;
             object-fit: cover;
-            border-radius: 8px;
-            background: #111418;
+            border-radius: 12px;
+            background: #e2e8f0;
         }
 
         .carousel__btn {
             flex: 0 0 auto;
-            width: 42px;
-            height: 42px;
+            width: 44px;
+            height: 44px;
             border: none;
             border-radius: 50%;
-            background: #2b6cb0;
             color: #fff;
             font-size: 18px;
-            line-height: 1;
             cursor: pointer;
-            transition: background 0.2s, transform 0.15s;
-            box-shadow: 0 4px 12px rgba(43, 108, 176, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s, background 0.2s;
+        }
+
+        .carousel__btn--prev {
+            background: #b9cde4;
+        }
+
+        .carousel__btn--next {
+            background: #3b82f6;
         }
 
         .carousel__btn:hover {
-            background: #3a86d1;
-        }
-
-        .carousel__btn:active {
-            transform: scale(0.92);
+            opacity: 0.8;
         }
 
         .carousel__btn:disabled {
@@ -96,46 +108,45 @@
         }
 
         .pager {
-            margin-top: 18px;
+            margin-top: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .pager__dot {
-            width: 10px;
-            height: 10px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
             border: none;
             padding: 0;
-            background: #3a3f4b;
+            background: #b9cde4;
             cursor: pointer;
-            transition: background 0.2s, transform 0.2s;
+            transition: background 0.2s;
         }
 
         .pager__dot.is-active {
-            background: #2b6cb0;
-            transform: scale(1.4);
+            background: #3b82f6;
         }
 
-        .pager__counter {
-            margin-top: 8px;
-            font-size: 13px;
-            color: #9aa3b2;
-        }
-
-        .pager__counter strong {
-            color: #fff;
-        }
-
-        @media (max-width: 640px) {
+        @media (max-width: 768px) {
             .gallery {
-                max-width: 100%;
+                padding: 24px 16px;
+            }
+
+            .gallery__title {
+                font-size: 20px;
+                margin-bottom: 16px;
             }
 
             .slide {
                 flex-basis: 100%;
+                padding: 0 5px;
+            }
+
+            .carousel {
+                gap: 10px;
             }
 
             .carousel__btn {
@@ -151,29 +162,26 @@
         <h1 class="gallery__title">Галерея</h1>
 
         <div class="carousel">
-            <button class="carousel__btn carousel__btn--prev" type="button" aria-label="Предыдущая страница">&#10094;</button>
+            <button class="carousel__btn carousel__btn--prev" type="button" aria-label="Предыдущая страница">&#8592;</button>
 
             <div class="carousel__viewport">
                 <div class="carousel__track" id="track">
-                    <figure class="slide"><img src="https://picsum.photos/id/1015/800/600" alt="Горное озеро" loading="lazy"></figure>
-                    <figure class="slide"><img src="https://picsum.photos/id/1016/800/600" alt="Горная река" loading="lazy"></figure>
-                    <figure class="slide"><img src="https://picsum.photos/id/1018/800/600" alt="Водопад" loading="lazy"></figure>
-                    <figure class="slide"><img src="https://picsum.photos/id/1019/800/600" alt="Лес" loading="lazy"></figure>
-                    <figure class="slide"><img src="https://picsum.photos/id/1020/800/600" alt="Пляж" loading="lazy"></figure>
-                    <figure class="slide"><img src="https://picsum.photos/id/1021/800/600" alt="Дюны" loading="lazy"></figure>
-                    <figure class="slide"><img src="https://picsum.photos/id/1022/800/600" alt="Пустыня" loading="lazy"></figure>
-                    <figure class="slide"><img src="https://picsum.photos/id/1023/800/600" alt="Скалы" loading="lazy"></figure>
+                    <!-- Ваши локальные картинки -->
+                    <figure class="slide"><img src="img1.jpg" alt="Изображение 1"></figure>
+                    <figure class="slide"><img src="img2.jpg" alt="Изображение 2"></figure>
+                    <figure class="slide"><img src="img3.jpg" alt="Изображение 3"></figure>
+                    <figure class="slide"><img src="img4.jpg" alt="Изображение 4"></figure>
+                    <figure class="slide"><img src="img5.jpg" alt="Изображение 5"></figure>
+                    <figure class="slide"><img src="img6.jpg" alt="Изображение 6"></figure>
+                    <figure class="slide"><img src="img7.jpg" alt="Изображение 7"></figure>
+                    <figure class="slide"><img src="img8.jpg" alt="Изображение 8"></figure>
                 </div>
             </div>
 
-            <button class="carousel__btn carousel__btn--next" type="button" aria-label="Следующая страница">&#10095;</button>
+            <button class="carousel__btn carousel__btn--next" type="button" aria-label="Следующая страница">&#8594;</button>
         </div>
 
         <div class="pager" id="pager" aria-label="Навигация по страницам"></div>
-
-        <div class="pager__counter" aria-live="polite">
-            Страница <strong id="pagerCurrent">1</strong> из <span id="pagerTotal">1</span>
-        </div>
     </main>
 
     <script>
@@ -184,8 +192,6 @@
             var prevBtn = document.querySelector(".carousel__btn--prev");
             var nextBtn = document.querySelector(".carousel__btn--next");
             var pager = document.getElementById("pager");
-            var pagerCurrent = document.getElementById("pagerCurrent");
-            var pagerTotal = document.getElementById("pagerTotal");
 
             var slides = Array.prototype.slice.call(track.children);
             var totalSlides = slides.length;
@@ -195,7 +201,7 @@
             var dots = [];
 
             function getPerView() {
-                return window.matchMedia("(max-width: 640px)").matches ? 1 : 3;
+                return window.matchMedia("(max-width: 768px)").matches ? 1 : 3;
             }
 
             function calcPages() {
@@ -219,7 +225,6 @@
                         dots.push(dot);
                     }(i));
                 }
-                pagerTotal.textContent = String(pages);
             }
 
             function render() {
@@ -234,14 +239,13 @@
                     currentPage = 0;
                 }
 
-                offset = currentPage * perView * 100;
+                offset = currentPage * perView * (100 / totalSlides);
                 track.style.transform = "translateX(-" + offset + "%)";
 
                 for (i = 0; i < dots.length; i += 1) {
                     dots[i].classList.toggle("is-active", i === currentPage);
                 }
 
-                pagerCurrent.textContent = String(currentPage + 1);
                 prevBtn.disabled = currentPage === 0;
                 nextBtn.disabled = currentPage === maxPage;
             }
