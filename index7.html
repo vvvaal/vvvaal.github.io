@@ -19,7 +19,7 @@
             justify-content: center;
             background: #edf2f7;
             padding: 24px 16px;
-            overflow-x: hidden; /* Убираем горизонтальный скролл */
+            overflow-x: hidden;
         }
 
         .gallery {
@@ -52,23 +52,26 @@
             flex: 1 1 auto;
             overflow: hidden;
             border-radius: 12px;
+            /* Важно для корректных расчетов */
+            position: relative; 
         }
 
         .carousel__track {
             display: flex;
             will-change: transform;
-            /* Убираем padding у контейнера, чтобы расчеты были точными */
         }
 
         .carousel__track.is-animated {
             transition: transform 0.4s ease-in-out;
         }
 
+        /* Слайд занимает ровно 1/3 на десктопе и 100% на мобилке */
         .slide {
             flex: 0 0 33.3333%;
             padding: 0 10px;
             display: flex;
             justify-content: center;
+            box-sizing: border-box;
         }
 
         .slide img {
@@ -78,7 +81,7 @@
             object-fit: cover;
             border-radius: 12px;
             background: #e2e8f0;
-            pointer-events: none; /* Защита от перетаскивания */
+            pointer-events: none;
         }
 
         .carousel__btn {
@@ -94,6 +97,7 @@
             align-items: center;
             justify-content: center;
             transition: opacity 0.2s, background 0.2s;
+            z-index: 10;
         }
 
         .carousel__btn--prev { background: #b9cde4; }
@@ -127,6 +131,7 @@
         @media (max-width: 768px) {
             .gallery { padding: 24px 16px; }
             .gallery__title { font-size: 20px; margin-bottom: 16px; }
+            /* Меняем ширину слайда на 100% */
             .slide { flex-basis: 100%; padding: 0 5px; }
             .carousel { gap: 10px; }
             .carousel__btn { width: 36px; height: 36px; font-size: 16px; }
@@ -140,9 +145,8 @@
         <div class="carousel">
             <button class="carousel__btn carousel__btn--prev" type="button" aria-label="Назад">&#8592;</button>
 
-            <div class="carousel__viewport">
+            <div class="carousel__viewport" id="viewport">
                 <div class="carousel__track" id="track">
-                    <!-- Картинки -->
                     <figure class="slide"><img src="img1.jpg" alt="Фото 1"></figure>
                     <figure class="slide"><img src="img2.jpg" alt="Фото 2"></figure>
                     <figure class="slide"><img src="img3.jpg" alt="Фото 3"></figure>
@@ -165,6 +169,7 @@
             "use strict";
 
             var track = document.getElementById("track");
+            var viewport = document.getElementById("viewport");
             var prevBtn = document.querySelector(".carousel__btn--prev");
             var nextBtn = document.querySelector(".carousel__btn--next");
             var pager = document.getElementById("pager");
@@ -173,36 +178,38 @@
             var total = originalSlides.length;
             
             var perView = 3;
-            var currentIndex = 0;
+            var currentIndex = 0; // Индекс активной картинки (от 0 до 7)
             var dots = [];
             var isAnimating = false;
+            var slideWidth = 0;
 
             // Определяем количество картинок на экране
             function getPerView() {
                 return window.matchMedia("(max-width: 768px)").matches ? 1 : 3;
             }
 
-            // Создаем клоны для бесконечности
+            // Создаем клоны для бесконечной прокрутки
             function setupClones() {
                 track.innerHTML = "";
+                // Возвращаем оригинальные слайды
                 originalSlides.forEach(function(slide) {
                     track.appendChild(slide);
                 });
 
-                // Клоны в начало (последние perView штук)
+                // Клоны в начало
                 for (var i = total - perView; i < total; i++) {
                     var clone = originalSlides[i].cloneNode(true);
                     track.insertBefore(clone, track.firstChild);
                 }
 
-                // Клоны в конец (первые perView штук)
+                // Клоны в конец
                 for (var j = 0; j < perView; j++) {
                     var clone = originalSlides[j].cloneNode(true);
                     track.appendChild(clone);
                 }
             }
 
-            // Отрисовка пейджера (по количеству оригинальных картинок)
+            // Отрисовка пейджера (ровно 8 точек)
             function buildPager() {
                 pager.innerHTML = "";
                 dots = [];
@@ -221,13 +228,14 @@
                 }
             }
 
+            // Подсветка активной точки
             function updatePager() {
                 for (var i = 0; i < dots.length; i += 1) {
                     dots[i].classList.toggle("is-active", i === currentIndex);
                 }
             }
 
-            // Функция сдвига
+            // Функция сдвига (рассчитываем в пикселях для точности)
             function setTransform(animate) {
                 if (animate) {
                     track.classList.add("is-animated");
@@ -235,9 +243,12 @@
                     track.classList.remove("is-animated");
                 }
                 
-                // Сдвиг происходит ровно на ширину одного слайда
-                var offset = (currentIndex + perView) * (100 / (total + perView * 2));
-                track.style.transform = "translateX(-" + offset + "%)";
+                // Ширина одного слайда (включая паддинги)
+                slideWidth = viewport.offsetWidth / perView;
+                
+                // Сдвигаем на (текущий индекс + количество клонов в начале) * ширину слайда
+                var offset = (currentIndex + perView) * slideWidth;
+                track.style.transform = "translateX(-" + offset + "px)";
             }
 
             function goNext() {
@@ -259,26 +270,26 @@
             function goTo(index) {
                 if (isAnimating) return;
                 
-                // Если переключаемся через точки, просто анимированно прокручиваем
-                // Если нужно очень далеко, это займет много времени, но для 8 картинок это ок.
+                // Для точек: если кликаем далеко, просто прыгаем.
+                // (Можно сделать плавно, но для простоты прыгаем в нужную позицию)
                 isAnimating = true;
                 currentIndex = index;
                 setTransform(true);
                 updatePager();
             }
 
-            // Мгновенное перемещение после анимации (чтобы не было пустоты)
+            // Мгновенное перемещение после анимации (без визуального скачка)
             track.addEventListener("transitionend", function () {
                 isAnimating = false;
 
-                // Ушли за правую границу
+                // Если ушли в правые клоны
                 if (currentIndex >= total) {
                     currentIndex = currentIndex - total;
                     setTransform(false);
-                    void track.offsetWidth;
+                    void track.offsetWidth; // Принудительный рефлоу
                 }
                 
-                // Ушли за левую границу
+                // Если ушли в левые клоны
                 if (currentIndex < 0) {
                     currentIndex = currentIndex + total;
                     setTransform(false);
@@ -293,20 +304,25 @@
                 
                 setupClones();
                 buildPager();
-                setTransform(false);
-                updatePager();
+                
+                // Ждем долю секунды, чтобы браузер пересчитал ширину viewport
+                setTimeout(function() {
+                    setTransform(false);
+                    updatePager();
+                }, 10);
             }
 
-            // Слушатели
+            // Слушатели кнопок
             prevBtn.addEventListener("click", goPrev);
             nextBtn.addEventListener("click", goNext);
 
+            // Управление с клавиатуры
             document.addEventListener("keydown", function (event) {
                 if (event.key === "ArrowLeft") goPrev();
                 if (event.key === "ArrowRight") goNext();
             });
 
-            // Свайпы
+            // Свайпы для мобильных
             var startX = 0;
             var isTouching = false;
 
@@ -326,7 +342,10 @@
                 }
             });
 
+            // Обновляем при изменении размера окна
             window.addEventListener("resize", recalc);
+            
+            // Запуск
             recalc();
         }());
     </script>
