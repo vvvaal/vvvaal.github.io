@@ -19,6 +19,8 @@
             justify-content: center;
             background: #edf2f7;
             padding: 24px 16px;
+            /* Убираем горизонтальный скролл на мобильных */
+            overflow-x: hidden; 
         }
 
         .gallery {
@@ -55,8 +57,11 @@
 
         .carousel__track {
             display: flex;
-            transition: transform 0.4s ease-in-out;
             will-change: transform;
+        }
+
+        .carousel__track.is-animated {
+            transition: transform 0.4s ease-in-out;
         }
 
         .slide {
@@ -73,6 +78,7 @@
             object-fit: cover;
             border-radius: 12px;
             background: #e2e8f0;
+            pointer-events: none; /* Защита от перетаскивания картинки мышкой */
         }
 
         .carousel__btn {
@@ -102,11 +108,6 @@
             opacity: 0.8;
         }
 
-        .carousel__btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
         .pager {
             margin-top: 24px;
             display: flex;
@@ -130,6 +131,7 @@
             background: #3b82f6;
         }
 
+        /* Мобильная версия: 1 фотография */
         @media (max-width: 768px) {
             .gallery {
                 padding: 24px 16px;
@@ -165,8 +167,8 @@
             <button class="carousel__btn carousel__btn--prev" type="button" aria-label="Предыдущая страница">&#8592;</button>
 
             <div class="carousel__viewport">
+                <!-- Оригинальные слайды -->
                 <div class="carousel__track" id="track">
-                    <!-- Ваши локальные картинки -->
                     <figure class="slide"><img src="img1.jpg" alt="Изображение 1"></figure>
                     <figure class="slide"><img src="img2.jpg" alt="Изображение 2"></figure>
                     <figure class="slide"><img src="img3.jpg" alt="Изображение 3"></figure>
@@ -193,33 +195,57 @@
             var nextBtn = document.querySelector(".carousel__btn--next");
             var pager = document.getElementById("pager");
 
-            var slides = Array.prototype.slice.call(track.children);
-            var totalSlides = slides.length;
-            var currentPage = 0;
+            var originalSlides = Array.prototype.slice.call(track.children);
+            var totalOriginal = originalSlides.length;
+            
             var perView = 3;
+            var currentIndex = 0;
+            var realIndex = 0;
             var pages = 1;
             var dots = [];
+            var isAnimating = false;
 
             function getPerView() {
                 return window.matchMedia("(max-width: 768px)").matches ? 1 : 3;
             }
 
+            function setupClones() {
+                // Очищаем трек от старых клонов (при ресайзе)
+                track.innerHTML = "";
+                originalSlides.forEach(function(slide) {
+                    track.appendChild(slide);
+                });
+
+                // Клонируем последние элементы и ставим в начало
+                for (var i = totalOriginal - perView; i < totalOriginal; i++) {
+                    var clone = originalSlides[i].cloneNode(true);
+                    clone.classList.add("is-clone");
+                    track.insertBefore(clone, track.firstChild);
+                }
+
+                // Клонируем первые элементы и ставим в конец
+                for (var j = 0; j < perView; j++) {
+                    var clone = originalSlides[j].cloneNode(true);
+                    clone.classList.add("is-clone");
+                    track.appendChild(clone);
+                }
+            }
+
             function calcPages() {
-                return Math.max(1, Math.ceil(totalSlides / perView));
+                return Math.ceil(totalOriginal / perView);
             }
 
             function buildPager() {
-                var i;
                 pager.innerHTML = "";
                 dots = [];
-                for (i = 0; i < pages; i += 1) {
+                for (var i = 0; i < pages; i += 1) {
                     (function (index) {
                         var dot = document.createElement("button");
                         dot.type = "button";
                         dot.className = "pager__dot";
                         dot.setAttribute("aria-label", "Перейти к странице " + (index + 1));
                         dot.addEventListener("click", function () {
-                            goTo(index);
+                            goToPage(index);
                         });
                         pager.appendChild(dot);
                         dots.push(dot);
@@ -227,60 +253,102 @@
                 }
             }
 
-            function render() {
-                var maxPage = pages - 1;
-                var offset;
-                var i;
+            function updatePager() {
+                // Вычисляем, какая страница сейчас активна
+                var pageIndex = Math.floor(realIndex / perView);
+                if (pageIndex >= pages) pageIndex = pages - 1;
 
-                if (currentPage > maxPage) {
-                    currentPage = maxPage;
+                for (var i = 0; i < dots.length; i += 1) {
+                    dots[i].classList.toggle("is-active", i === pageIndex);
                 }
-                if (currentPage < 0) {
-                    currentPage = 0;
-                }
+            }
 
-                offset = currentPage * perView * (100 / totalSlides);
+            function setTransform(animate) {
+                if (animate) {
+                    track.classList.add("is-animated");
+                } else {
+                    track.classList.remove("is-animated");
+                }
+                
+                // Сдвигаем на (текущий индекс + количество клонов в начале) * ширину слайда
+                var offset = (currentIndex + perView) * (100 / (totalOriginal + perView * 2));
                 track.style.transform = "translateX(-" + offset + "%)";
-
-                for (i = 0; i < dots.length; i += 1) {
-                    dots[i].classList.toggle("is-active", i === currentPage);
-                }
-
-                prevBtn.disabled = currentPage === 0;
-                nextBtn.disabled = currentPage === maxPage;
-            }
-
-            function goTo(page) {
-                currentPage = page;
-                render();
-            }
-
-            function goPrev() {
-                goTo(currentPage - 1);
             }
 
             function goNext() {
-                goTo(currentPage + 1);
+                if (isAnimating) return;
+                isAnimating = true;
+                currentIndex += 1;
+                realIndex = (realIndex + 1) % totalOriginal;
+                setTransform(true);
+                updatePager();
             }
 
+            function goPrev() {
+                if (isAnimating) return;
+                isAnimating = true;
+                currentIndex -= 1;
+                realIndex = (realIndex - 1 + totalOriginal) % totalOriginal;
+                setTransform(true);
+                updatePager();
+            }
+
+            function goToPage(page) {
+                if (isAnimating) return;
+                var targetIndex = page * perView;
+                if (targetIndex >= totalOriginal) targetIndex = totalOriginal - 1;
+                
+                // Прыгаем напрямую без эффектов для точек пагинации
+                currentIndex = targetIndex;
+                realIndex = targetIndex;
+                setTransform(true);
+                updatePager();
+            }
+
+            // Обработка окончания анимации для зацикливания
+            track.addEventListener("transitionend", function () {
+                isAnimating = false;
+
+                // Если мы ушли далеко вправо (в клоны)
+                if (currentIndex >= totalOriginal) {
+                    currentIndex = currentIndex - totalOriginal;
+                    setTransform(false);
+                    // Принудительный рефлоу для применения стилей без анимации
+                    void track.offsetWidth; 
+                }
+                
+                // Если мы ушли далеко влево (в клоны)
+                if (currentIndex < 0) {
+                    currentIndex = currentIndex + totalOriginal;
+                    setTransform(false);
+                    void track.offsetWidth;
+                }
+            });
+
             function recalc() {
+                isAnimating = false;
                 perView = getPerView();
                 pages = calcPages();
+                
+                // При смене разрешения сбрасываем позицию на начало
+                currentIndex = 0;
+                realIndex = 0;
+                
+                setupClones();
                 buildPager();
-                render();
+                setTransform(false);
+                updatePager();
             }
 
             prevBtn.addEventListener("click", goPrev);
             nextBtn.addEventListener("click", goNext);
 
             document.addEventListener("keydown", function (event) {
-                if (event.key === "ArrowLeft") {
-                    goPrev();
-                } else if (event.key === "ArrowRight") {
-                    goNext();
-                }
+                if (event.key === "ArrowLeft") goPrev();
+                if (event.key === "ArrowRight") goNext();
             });
 
+            // Свайпы
             var startX = 0;
             var isTouching = false;
 
@@ -290,25 +358,19 @@
             }, { passive: true });
 
             track.addEventListener("touchend", function (event) {
-                var endX;
-                var diff;
-                if (!isTouching) {
-                    return;
-                }
+                if (!isTouching) return;
                 isTouching = false;
-                endX = event.changedTouches[0].clientX;
-                diff = endX - startX;
+                var endX = event.changedTouches[0].clientX;
+                var diff = endX - startX;
                 if (Math.abs(diff) > 40) {
-                    if (diff < 0) {
-                        goNext();
-                    } else {
-                        goPrev();
-                    }
+                    if (diff < 0) goNext();
+                    else goPrev();
                 }
             });
 
             window.addEventListener("resize", recalc);
 
+            // Запуск
             recalc();
         }());
     </script>
