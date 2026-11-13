@@ -19,8 +19,7 @@
             justify-content: center;
             background: #edf2f7;
             padding: 24px 16px;
-            /* Убираем горизонтальный скролл на мобильных */
-            overflow-x: hidden; 
+            overflow-x: hidden; /* Убираем горизонтальный скролл */
         }
 
         .gallery {
@@ -58,6 +57,7 @@
         .carousel__track {
             display: flex;
             will-change: transform;
+            /* Убираем padding у контейнера, чтобы расчеты были точными */
         }
 
         .carousel__track.is-animated {
@@ -78,7 +78,7 @@
             object-fit: cover;
             border-radius: 12px;
             background: #e2e8f0;
-            pointer-events: none; /* Защита от перетаскивания картинки мышкой */
+            pointer-events: none; /* Защита от перетаскивания */
         }
 
         .carousel__btn {
@@ -96,17 +96,9 @@
             transition: opacity 0.2s, background 0.2s;
         }
 
-        .carousel__btn--prev {
-            background: #b9cde4;
-        }
-
-        .carousel__btn--next {
-            background: #3b82f6;
-        }
-
-        .carousel__btn:hover {
-            opacity: 0.8;
-        }
+        .carousel__btn--prev { background: #b9cde4; }
+        .carousel__btn--next { background: #3b82f6; }
+        .carousel__btn:hover { opacity: 0.8; }
 
         .pager {
             margin-top: 24px;
@@ -133,29 +125,11 @@
 
         /* Мобильная версия: 1 фотография */
         @media (max-width: 768px) {
-            .gallery {
-                padding: 24px 16px;
-            }
-
-            .gallery__title {
-                font-size: 20px;
-                margin-bottom: 16px;
-            }
-
-            .slide {
-                flex-basis: 100%;
-                padding: 0 5px;
-            }
-
-            .carousel {
-                gap: 10px;
-            }
-
-            .carousel__btn {
-                width: 36px;
-                height: 36px;
-                font-size: 16px;
-            }
+            .gallery { padding: 24px 16px; }
+            .gallery__title { font-size: 20px; margin-bottom: 16px; }
+            .slide { flex-basis: 100%; padding: 0 5px; }
+            .carousel { gap: 10px; }
+            .carousel__btn { width: 36px; height: 36px; font-size: 16px; }
         }
     </style>
 </head>
@@ -164,26 +138,26 @@
         <h1 class="gallery__title">Галерея</h1>
 
         <div class="carousel">
-            <button class="carousel__btn carousel__btn--prev" type="button" aria-label="Предыдущая страница">&#8592;</button>
+            <button class="carousel__btn carousel__btn--prev" type="button" aria-label="Назад">&#8592;</button>
 
             <div class="carousel__viewport">
-                <!-- Оригинальные слайды -->
                 <div class="carousel__track" id="track">
-                    <figure class="slide"><img src="img1.jpg" alt="Изображение 1"></figure>
-                    <figure class="slide"><img src="img2.jpg" alt="Изображение 2"></figure>
-                    <figure class="slide"><img src="img3.jpg" alt="Изображение 3"></figure>
-                    <figure class="slide"><img src="img4.jpg" alt="Изображение 4"></figure>
-                    <figure class="slide"><img src="img5.jpg" alt="Изображение 5"></figure>
-                    <figure class="slide"><img src="img6.jpg" alt="Изображение 6"></figure>
-                    <figure class="slide"><img src="img7.jpg" alt="Изображение 7"></figure>
-                    <figure class="slide"><img src="img8.jpg" alt="Изображение 8"></figure>
+                    <!-- Картинки -->
+                    <figure class="slide"><img src="img1.jpg" alt="Фото 1"></figure>
+                    <figure class="slide"><img src="img2.jpg" alt="Фото 2"></figure>
+                    <figure class="slide"><img src="img3.jpg" alt="Фото 3"></figure>
+                    <figure class="slide"><img src="img4.jpg" alt="Фото 4"></figure>
+                    <figure class="slide"><img src="img5.jpg" alt="Фото 5"></figure>
+                    <figure class="slide"><img src="img6.jpg" alt="Фото 6"></figure>
+                    <figure class="slide"><img src="img7.jpg" alt="Фото 7"></figure>
+                    <figure class="slide"><img src="img8.jpg" alt="Фото 8"></figure>
                 </div>
             </div>
 
-            <button class="carousel__btn carousel__btn--next" type="button" aria-label="Следующая страница">&#8594;</button>
+            <button class="carousel__btn carousel__btn--next" type="button" aria-label="Вперед">&#8594;</button>
         </div>
 
-        <div class="pager" id="pager" aria-label="Навигация по страницам"></div>
+        <div class="pager" id="pager" aria-label="Навигация"></div>
     </main>
 
     <script>
@@ -196,56 +170,50 @@
             var pager = document.getElementById("pager");
 
             var originalSlides = Array.prototype.slice.call(track.children);
-            var totalOriginal = originalSlides.length;
+            var total = originalSlides.length;
             
             var perView = 3;
             var currentIndex = 0;
-            var realIndex = 0;
-            var pages = 1;
             var dots = [];
             var isAnimating = false;
 
+            // Определяем количество картинок на экране
             function getPerView() {
                 return window.matchMedia("(max-width: 768px)").matches ? 1 : 3;
             }
 
+            // Создаем клоны для бесконечности
             function setupClones() {
-                // Очищаем трек от старых клонов (при ресайзе)
                 track.innerHTML = "";
                 originalSlides.forEach(function(slide) {
                     track.appendChild(slide);
                 });
 
-                // Клонируем последние элементы и ставим в начало
-                for (var i = totalOriginal - perView; i < totalOriginal; i++) {
+                // Клоны в начало (последние perView штук)
+                for (var i = total - perView; i < total; i++) {
                     var clone = originalSlides[i].cloneNode(true);
-                    clone.classList.add("is-clone");
                     track.insertBefore(clone, track.firstChild);
                 }
 
-                // Клонируем первые элементы и ставим в конец
+                // Клоны в конец (первые perView штук)
                 for (var j = 0; j < perView; j++) {
                     var clone = originalSlides[j].cloneNode(true);
-                    clone.classList.add("is-clone");
                     track.appendChild(clone);
                 }
             }
 
-            function calcPages() {
-                return Math.ceil(totalOriginal / perView);
-            }
-
+            // Отрисовка пейджера (по количеству оригинальных картинок)
             function buildPager() {
                 pager.innerHTML = "";
                 dots = [];
-                for (var i = 0; i < pages; i += 1) {
+                for (var i = 0; i < total; i += 1) {
                     (function (index) {
                         var dot = document.createElement("button");
                         dot.type = "button";
                         dot.className = "pager__dot";
-                        dot.setAttribute("aria-label", "Перейти к странице " + (index + 1));
+                        dot.setAttribute("aria-label", "Перейти к фото " + (index + 1));
                         dot.addEventListener("click", function () {
-                            goToPage(index);
+                            goTo(index);
                         });
                         pager.appendChild(dot);
                         dots.push(dot);
@@ -254,15 +222,12 @@
             }
 
             function updatePager() {
-                // Вычисляем, какая страница сейчас активна
-                var pageIndex = Math.floor(realIndex / perView);
-                if (pageIndex >= pages) pageIndex = pages - 1;
-
                 for (var i = 0; i < dots.length; i += 1) {
-                    dots[i].classList.toggle("is-active", i === pageIndex);
+                    dots[i].classList.toggle("is-active", i === currentIndex);
                 }
             }
 
+            // Функция сдвига
             function setTransform(animate) {
                 if (animate) {
                     track.classList.add("is-animated");
@@ -270,8 +235,8 @@
                     track.classList.remove("is-animated");
                 }
                 
-                // Сдвигаем на (текущий индекс + количество клонов в начале) * ширину слайда
-                var offset = (currentIndex + perView) * (100 / (totalOriginal + perView * 2));
+                // Сдвиг происходит ровно на ширину одного слайда
+                var offset = (currentIndex + perView) * (100 / (total + perView * 2));
                 track.style.transform = "translateX(-" + offset + "%)";
             }
 
@@ -279,7 +244,6 @@
                 if (isAnimating) return;
                 isAnimating = true;
                 currentIndex += 1;
-                realIndex = (realIndex + 1) % totalOriginal;
                 setTransform(true);
                 updatePager();
             }
@@ -288,38 +252,35 @@
                 if (isAnimating) return;
                 isAnimating = true;
                 currentIndex -= 1;
-                realIndex = (realIndex - 1 + totalOriginal) % totalOriginal;
                 setTransform(true);
                 updatePager();
             }
 
-            function goToPage(page) {
+            function goTo(index) {
                 if (isAnimating) return;
-                var targetIndex = page * perView;
-                if (targetIndex >= totalOriginal) targetIndex = totalOriginal - 1;
                 
-                // Прыгаем напрямую без эффектов для точек пагинации
-                currentIndex = targetIndex;
-                realIndex = targetIndex;
+                // Если переключаемся через точки, просто анимированно прокручиваем
+                // Если нужно очень далеко, это займет много времени, но для 8 картинок это ок.
+                isAnimating = true;
+                currentIndex = index;
                 setTransform(true);
                 updatePager();
             }
 
-            // Обработка окончания анимации для зацикливания
+            // Мгновенное перемещение после анимации (чтобы не было пустоты)
             track.addEventListener("transitionend", function () {
                 isAnimating = false;
 
-                // Если мы ушли далеко вправо (в клоны)
-                if (currentIndex >= totalOriginal) {
-                    currentIndex = currentIndex - totalOriginal;
+                // Ушли за правую границу
+                if (currentIndex >= total) {
+                    currentIndex = currentIndex - total;
                     setTransform(false);
-                    // Принудительный рефлоу для применения стилей без анимации
-                    void track.offsetWidth; 
+                    void track.offsetWidth;
                 }
                 
-                // Если мы ушли далеко влево (в клоны)
+                // Ушли за левую границу
                 if (currentIndex < 0) {
-                    currentIndex = currentIndex + totalOriginal;
+                    currentIndex = currentIndex + total;
                     setTransform(false);
                     void track.offsetWidth;
                 }
@@ -328,11 +289,7 @@
             function recalc() {
                 isAnimating = false;
                 perView = getPerView();
-                pages = calcPages();
-                
-                // При смене разрешения сбрасываем позицию на начало
                 currentIndex = 0;
-                realIndex = 0;
                 
                 setupClones();
                 buildPager();
@@ -340,6 +297,7 @@
                 updatePager();
             }
 
+            // Слушатели
             prevBtn.addEventListener("click", goPrev);
             nextBtn.addEventListener("click", goNext);
 
@@ -369,8 +327,6 @@
             });
 
             window.addEventListener("resize", recalc);
-
-            // Запуск
             recalc();
         }());
     </script>
