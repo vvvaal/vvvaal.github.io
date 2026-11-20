@@ -14,15 +14,9 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center; /* Центрируем кнопку по вертикали */
             padding: 20px;
             min-height: 100vh;
-        }
-
-        video {
-            max-width: 100%;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
         }
 
         button#open-modal {
@@ -161,11 +155,6 @@
 </head>
 <body>
 
-    <video width="640" height="360" controls>
-        <source src="vidosik.mp4" type="video/mp4">
-        Ваш браузер не поддерживает элемент video.
-    </video>
-
     <button id="open-modal">Открыть форму обратной связи</button>
 
     <div class="modal" id="modal">
@@ -177,7 +166,7 @@
                 <input name="email" type="email" id="email" placeholder="Email *" required>
                 <input name="tel" type="tel" id="phone" placeholder="Телефон *" required>
                 <input name="organization" type="text" id="organization" placeholder="Организация *" required>
-                <textarea name="message" id="message" placeholder="Сообщение о просмотренном видео *" required></textarea>
+                <textarea name="message" id="message" placeholder="Сообщение *" required></textarea>
                 
                 <label>
                     <input name="checkbox" type="checkbox" id="consent" required>
