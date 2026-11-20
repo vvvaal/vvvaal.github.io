@@ -5,12 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Обратная связь</title>
     <style>
-        /* Базовые стили */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: system-ui, -apple-system, sans-serif;
@@ -22,58 +17,45 @@
             min-height: 100vh;
         }
 
-        /* Кнопка открытия */
         .open-btn {
             padding: 15px 30px;
             font-size: 18px;
             background: #007bff;
-            color: white;
+            color: #fff;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             transition: background 0.2s;
         }
+        .open-btn:hover { background: #0056b3; }
 
-        .open-btn:hover {
-            background: #0056b3;
-        }
-
-        /* Оверлей (затемнение фона) */
         .overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             background: rgba(0, 0, 0, 0.5);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 1000;
+            padding: 10px;
         }
+        .overlay.active { display: flex; }
 
-        .overlay.active {
-            display: flex;
-        }
-
-        /* Контейнер формы (Попап) */
         .modal {
-            background: white;
+            background: #fff;
             padding: 20px;
             border-radius: 12px;
-            width: 90%;
+            width: 100%;
             max-width: 500px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             position: relative;
-            /* Ключевое для мобильных: не больше высоты экрана */
             max-height: 100vh;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
         }
 
-        /* Закрыть */
         .close-btn {
             position: absolute;
             top: 10px;
@@ -85,22 +67,16 @@
             color: #666;
             line-height: 1;
         }
-
-        .close-btn:hover {
-            color: #000;
-        }
+        .close-btn:hover { color: #000; }
 
         h2 {
             margin-bottom: 15px;
             font-size: 20px;
             text-align: center;
-            padding-right: 20px; /* Чтобы не наезжало на крестик */
+            padding-right: 20px;
         }
 
-        /* Поля формы */
-        .form-group {
-            margin-bottom: 12px;
-        }
+        .form-group { margin-bottom: 12px; }
 
         .form-group label {
             display: block;
@@ -126,7 +102,6 @@
             min-height: 80px;
         }
 
-        /* Чекбокс */
         .checkbox-group {
             display: flex;
             align-items: flex-start;
@@ -143,29 +118,20 @@
             flex-shrink: 0;
         }
 
-        /* Кнопка отправки */
         .submit-btn {
             width: 100%;
             padding: 12px;
             background: #28a745;
-            color: white;
+            color: #fff;
             border: none;
             border-radius: 6px;
             font-size: 16px;
             cursor: pointer;
             transition: background 0.2s;
         }
+        .submit-btn:disabled { background: #6c757d; cursor: not-allowed; }
+        .submit-btn:hover:not(:disabled) { background: #218838; }
 
-        .submit-btn:disabled {
-            background: #6c757d;
-            cursor: not-allowed;
-        }
-
-        .submit-btn:hover:not(:disabled) {
-            background: #218838;
-        }
-
-        /* Сообщения */
         .message {
             margin-top: 10px;
             text-align: center;
@@ -174,20 +140,9 @@
             border-radius: 4px;
             display: none;
         }
+        .message.success { display: block; background: #d4edda; color: #155724; }
+        .message.error { display: block; background: #f8d7da; color: #721c24; }
 
-        .message.success {
-            display: block;
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .message.error {
-            display: block;
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        /* Мобильная адаптация */
         @media (max-width: 480px) {
             .modal {
                 width: 100%;
@@ -196,19 +151,14 @@
                 border-radius: 0;
                 padding: 15px;
             }
-
-            h2 {
-                margin-top: 10px;
-            }
+            h2 { margin-top: 10px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Кнопка для открытия -->
     <button class="open-btn" id="openBtn">Связаться с нами</button>
 
-    <!-- Оверлей и модальное окно -->
     <div class="overlay" id="overlay">
         <div class="modal">
             <button class="close-btn" id="closeBtn" aria-label="Закрыть">&times;</button>
@@ -255,26 +205,21 @@
         (function() {
             'use strict';
 
-            // --- Конфигурация ---
-            const FORMCARRY_ENDPOINT = 'https://formcarry.com/s/YOUR_FORM_ID'; // <-- ЗАМЕНИТЕ НА ВАШ ID
-            const STORAGE_KEY = 'feedback_form_data';
+            // ВАЖНО: замените YOUR_FORM_ID на ID вашей формы с formcarry.com
+            var FORMCARRY_ENDPOINT = 'https://formcarry.com/s/YOUR_FORM_ID';
+            var STORAGE_KEY = 'feedback_form_data';
 
-            // --- Элементы DOM ---
-            const openBtn = document.getElementById('openBtn');
-            const closeBtn = document.getElementById('closeBtn');
-            const overlay = document.getElementById('overlay');
-            const form = document.getElementById('feedbackForm');
-            const submitBtn = document.getElementById('submitBtn');
-            const messageDiv = document.getElementById('formMessage');
+            var openBtn = document.getElementById('openBtn');
+            var closeBtn = document.getElementById('closeBtn');
+            var overlay = document.getElementById('overlay');
+            var form = document.getElementById('feedbackForm');
+            var submitBtn = document.getElementById('submitBtn');
+            var messageDiv = document.getElementById('formMessage');
 
-            // Поля, которые нужно сохранять
-            const fields = ['fullname', 'email', 'phone', 'organization', 'message'];
-
-            // --- Функции History API ---
+            var fields = ['fullname', 'email', 'phone', 'organization', 'message'];
 
             function openModal() {
                 overlay.classList.add('active');
-                // Меняем URL, добавляя хеш, чтобы работала кнопка "Назад"
                 if (window.location.hash !== '#contact') {
                     history.pushState({ modal: 'contact' }, '', '#contact');
                 }
@@ -284,59 +229,45 @@
             function closeModal() {
                 overlay.classList.remove('active');
                 clearMessage();
-                // Если мы закрываем форму кнопкой, нужно убрать хеш
                 if (window.location.hash === '#contact') {
-                    history.back(); // Это вызовет popstate, который сделает всю грязную работу
+                    history.back();
                 }
             }
 
-            // Обработчик кнопки "Назад" в браузере
-            window.addEventListener('popstate', function(event) {
+            window.addEventListener('popstate', function() {
                 if (window.location.hash === '#contact') {
-                    // Если пользователь нажал "Вперед" и вернулся на #contact
                     openModal();
                 } else {
-                    // Если хеша нет (или он другой), закрываем
                     overlay.classList.remove('active');
                 }
             });
 
-            // Проверка при загрузке страницы (если открыли ссылку сразу с #contact)
             if (window.location.hash === '#contact') {
-                // Небольшая задержка, чтобы DOM точно прогрузился
                 setTimeout(openModal, 0);
             }
 
-            // --- LocalStorage ---
-
             function saveFormData() {
-                const data = {};
+                var data = {};
                 fields.forEach(function(id) {
-                    const el = document.getElementById(id);
-                    if (el) data[id] = el.value;
+                    var el = document.getElementById(id);
+                    if (el) { data[id] = el.value; }
                 });
-                const consent = document.getElementById('consent');
-                if (consent) data.consent = consent.checked;
-
+                var consent = document.getElementById('consent');
+                if (consent) { data.consent = consent.checked; }
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
             }
 
             function restoreFormData() {
-                const saved = localStorage.getItem(STORAGE_KEY);
-                if (!saved) return;
-
+                var saved = localStorage.getItem(STORAGE_KEY);
+                if (!saved) { return; }
                 try {
-                    const data = JSON.parse(saved);
+                    var data = JSON.parse(saved);
                     fields.forEach(function(id) {
-                        const el = document.getElementById(id);
-                        if (el && data[id] !== undefined) {
-                            el.value = data[id];
-                        }
+                        var el = document.getElementById(id);
+                        if (el && data[id] !== undefined) { el.value = data[id]; }
                     });
-                    const consent = document.getElementById('consent');
-                    if (consent && data.consent !== undefined) {
-                        consent.checked = data.consent;
-                    }
+                    var consent = document.getElementById('consent');
+                    if (consent && data.consent !== undefined) { consent.checked = data.consent; }
                 } catch (e) {
                     console.warn('Ошибка восстановления данных', e);
                 }
@@ -346,8 +277,6 @@
                 localStorage.removeItem(STORAGE_KEY);
                 form.reset();
             }
-
-            // --- Отправка формы ---
 
             function showMessage(text, type) {
                 messageDiv.textContent = text;
@@ -359,22 +288,19 @@
                 messageDiv.className = 'message';
             }
 
-            form.addEventListener('submit', async function(e) {
+            form.addEventListener('submit', function(e) {
                 e.preventDefault();
 
-                // Валидация
                 if (!form.checkValidity()) {
                     form.reportValidity();
                     return;
                 }
 
-                // Блокируем кнопку
                 submitBtn.disabled = true;
                 submitBtn.textContent = 'Отправка...';
                 clearMessage();
 
-                // Сбор данных
-                const formData = {
+                var formData = {
                     fullname: document.getElementById('fullname').value.trim(),
                     email: document.getElementById('email').value.trim(),
                     phone: document.getElementById('phone').value.trim(),
@@ -383,55 +309,48 @@
                     consent: document.getElementById('consent').checked
                 };
 
-                try {
-                    const response = await fetch(FORMCARRY_ENDPOINT, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify(formData)
+                fetch(FORMCARRY_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                })
+                .then(function(response) {
+                    return response.json().then(function(result) {
+                        return { ok: response.ok, result: result };
                     });
-
-                    const result = await response.json();
-
-                    if (response.ok && result.code === 200) {
+                })
+                .then(function(data) {
+                    if (data.ok && data.result.code === 200) {
                         showMessage('Сообщение успешно отправлено!', 'success');
-                        // Очищаем поля и LocalStorage только при успехе
                         clearFormData();
-                        // Опционально: закрыть форму через 2 секунды
-                        // setTimeout(closeModal, 2000);
                     } else {
-                        throw new Error(result.message || 'Ошибка сервера');
+                        throw new Error(data.result.message || 'Ошибка сервера');
                     }
-                } catch (error) {
+                })
+                .catch(function(error) {
                     console.error('Ошибка отправки:', error);
                     showMessage('Ошибка отправки: ' + error.message, 'error');
-                } finally {
+                })
+                .finally(function() {
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Отправить';
-                }
+                });
             });
 
-            // --- Слушатели событий ---
-
-            // Сохраняем при вводе (для текстовых полей)
             fields.forEach(function(id) {
-                const el = document.getElementById(id);
-                if (el) {
-                    el.addEventListener('input', saveFormData);
-                }
+                var el = document.getElementById(id);
+                if (el) { el.addEventListener('input', saveFormData); }
             });
-            // Для чекбокса
             document.getElementById('consent').addEventListener('change', saveFormData);
 
-            // Кнопки
             openBtn.addEventListener('click', openModal);
             closeBtn.addEventListener('click', closeModal);
             overlay.addEventListener('click', function(e) {
-                if (e.target === overlay) closeModal();
+                if (e.target === overlay) { closeModal(); }
             });
-
         })();
     </script>
 </body>
