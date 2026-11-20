@@ -217,6 +217,18 @@
             var messageDiv = document.getElementById('formMessage');
 
             var fields = ['fullname', 'email', 'phone', 'organization', 'message'];
+            var fullnameInput = document.getElementById('fullname');
+            var phoneInput = document.getElementById('phone');
+
+            // Фильтрация ввода для ФИО (только буквы, пробел и дефис)
+            fullnameInput.addEventListener('input', function() {
+                this.value = this.value.replace(/[^a-zA-Zа-яА-ЯёЁ\s\-]/g, '');
+            });
+
+            // Фильтрация ввода для Телефона (только цифры, пробел, плюс, скобки и дефис)
+            phoneInput.addEventListener('input', function() {
+                this.value = this.value.replace(/[^\d\s\+\-\(\)]/g, '');
+            });
 
             function openModal() {
                 overlay.classList.add('active');
